@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DistributedDebug|Win32">
+      <Configuration>DistributedDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DistributedRelease|Win32">
+      <Configuration>DistributedRelease</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CE587481-19C2-41B0-88B2-9BF8CBFC1A56}</ProjectGuid>
+    <RootNamespace>Compiler</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(HPCDIR)\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">$(HPCDIR)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(HPCDIR)\Lib\i386;$(LibraryPath);$(ExecutablePath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">$(HPCDIR)\Lib\i386;$(LibraryPath);$(ExecutablePath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(HPCDIR)\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">$(HPCDIR)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(HPCDIR)\Lib\i386;$(LibraryPath);$(ExecutablePath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">$(HPCDIR)\Lib\i386;$(LibraryPath);$(ExecutablePath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;EXECUTION_STRATEGY_ITERATIVE;ANALYZE_AGAIN_ONDEBUG;GENERATE_CODE_EVERY_TIME;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>$(SolutionDir)$(Configuration)\ScedulersDistributed.lib;msmpi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;EXECUTION_DISTRIBUTED_ITERATIVE;GENERATE_CODE_EVERY_TIME;ANALYZE_AGAIN_ONDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>$(SolutionDir)$(Configuration)\ScedulersDistributed.lib;msmpi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;EXECUTION_STRATEGY_ITERATIVE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>$(SolutionDir)$(Configuration)\ScedulersDistributed.lib;msmpi.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DistributedRelease|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;EXECUTION_DISTRIBUTED_ITERATIVE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>$(SolutionDir)$(Configuration)\ScedulersDistributed.lib;msmpi.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AgapiaAIExample.cpp" />
+    <ClCompile Include="calc3.cpp" />
+    <ClCompile Include="calc3_utils.cpp" />
+    <ClCompile Include="CommonUtils.cpp" />
+    <ClCompile Include="ExecutionStrategy.cpp" />
+    <ClCompile Include="Expression.cpp" />
+    <ClCompile Include="InputTypes.cpp" />
+    <ClCompile Include="lex.yy.c" />
+    <ClCompile Include="FORNormal.cpp" />
+    <ClCompile Include="SymbolTable.cpp" />
+    <ClCompile Include="ASIGNMENTNode.cpp" />
+    <ClCompile Include="BaseNode.cpp" />
+    <ClCompile Include="CModuleCode.cpp" />
+    <ClCompile Include="DECLARATIONNode.cpp" />
+    <ClCompile Include="FOREachNode.cpp" />
+    <ClCompile Include="IFNode.cpp" />
+    <ClCompile Include="INTERMEDIATENode.cpp" />
+    <ClCompile Include="ReferenceNode.cpp" />
+    <ClCompile Include="AgapiaToCCode.cpp" />
+    <ClCompile Include="AgapiaToCCode_ExecutorImpl.cpp" />
+    <ClCompile Include="CompilationBlackbox.cpp" />
+    <ClCompile Include="ExecutionBlackbox.cpp" />
+    <ClCompile Include="ExecutionStrategyConcrete_MPI.cpp" />
+    <ClCompile Include="ExecutionStrategyConcrete_Serial.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainInputParser.cpp" />
+    <ClCompile Include="Streams.cpp" />
+    <ClCompile Include="WHILENode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AgapiaAIExample.h" />
+    <ClInclude Include="BufferedDataTypes.h" />
+    <ClInclude Include="calc3.hpp" />
+    <ClInclude Include="calc3_defs.h" />
+    <ClInclude Include="calc3_utils.h" />
+    <ClInclude Include="CommonTypes_Conditionals.h" />
+    <ClInclude Include="CommonUtils.h" />
+    <ClInclude Include="ExecutionCommon.h" />
+    <ClInclude Include="ExecutionStrategy_Defines.h" />
+    <ClInclude Include="Expressions.h" />
+    <ClInclude Include="FORNormalNode.h" />
+    <ClInclude Include="InputTypes.h" />
+    <ClInclude Include="SymbolTable.h" />
+    <ClInclude Include="ASIGNMENTNode.h" />
+    <ClInclude Include="BaseNode.h" />
+    <ClInclude Include="CModuleCode.h" />
+    <ClInclude Include="DECLARATIONNode.h" />
+    <ClInclude Include="FOREachNode.h" />
+    <ClInclude Include="IFNode.h" />
+    <ClInclude Include="INTERMEDIATENode.h" />
+    <ClInclude Include="ReferenceNode.h" />
+    <ClInclude Include="AgapiaToCCode.h" />
+    <ClInclude Include="CompilationBlackbox.h" />
+    <ClInclude Include="CONFIGURATION.h" />
+    <ClInclude Include="ExecutionBlackbox.h" />
+    <ClInclude Include="ExecutionStrategy.h" />
+    <ClInclude Include="ExecutionStrategyConcrete_MPI.h" />
+    <ClInclude Include="ExecutionStrategyConcrete_Serial.h" />
+    <ClInclude Include="MainInputParser.h" />
+    <ClInclude Include="GLOBALDebugParams.h" />
+    <ClInclude Include="platform.h" />
+    <ClInclude Include="Profiler.h" />
+    <ClInclude Include="Streams.h" />
+    <ClInclude Include="TGAReader.h" />
+    <ClInclude Include="WHILENode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="calc3.l">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">true</ExcludedFromBuild>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">FLEX step</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">FLEX step</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">flex %(FullPath)
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">flex %(FullPath)
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath).c;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">%(FullPath).c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="calc3.y">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">true</ExcludedFromBuild>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">BISON Step</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">BISON Step</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bison -d %(FullPath)
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">bison -d %(FullPath)
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath).c;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='DistributedDebug|Win32'">%(FullPath).c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="..\..\MY\Compiler\input.txt" />
+    <None Include="..\..\MY\Compiler\READ" />
+    <None Include="..\..\MY\Compiler\SUM0" />
+    <None Include="..\..\MY\Compiler\SUMI" />
+    <None Include="..\..\MY\Compiler\SUMRESULT" />
+    <None Include="COMPUTEJOB" />
+    <None Include="IDENTITY" />
+    <None Include="EVENNUMBER" />
+    <None Include="input.txt" />
+    <None Include="MAIN" />
+    <None Include="MainInput.txt" />
+    <None Include="ODDNUMBER" />
+    <None Include="READ" />
+    <None Include="PRINTRESULTS" />
+    <None Include="TESTANDGORIGHT" />
+    <None Include="___input.txt" />
+    <None Include="examplemanual.txt" />
+    <None Include="input_copy.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

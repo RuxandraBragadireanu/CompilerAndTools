@@ -1,0 +1,36 @@
+﻿  AgapiaAIExample.cpp
+  AgapiaToCCode.cpp
+  AgapiaToCCode_ExecutorImpl.cpp
+  ASIGNMENTNode.cpp
+  BaseNode.cpp
+  calc3_utils.cpp
+  CModuleCode.cpp
+  CodeSerializationFactory.cpp
+  CommonUtils.cpp
+  CompilationBlackbox.cpp
+  DECLARATIONNode.cpp
+  ExecutionBlackbox.cpp
+  ExecutionStrategy.cpp
+  ExecutionStrategyConcrete_MPI.cpp
+  ExecutionStrategyConcrete_Serial.cpp
+  Expression.cpp
+  FOREachNode.cpp
+  FORNormal.cpp
+  IFNode.cpp
+  InputTypes.cpp
+  Compiling...
+  INTERMEDIATENode.cpp
+  main.cpp
+  MainInputParser.cpp
+  Parser_YaccWrapper.cpp
+  Profiler.cpp
+  ReferenceNode.cpp
+  Streams.cpp
+  SymbolTable.cpp
+  TGAReader.cpp
+  WHILENode.cpp
+  Parser_LexWrapper.c
+  Generating code
+  All 2843 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools-master\AGAPIA Compiler\Compiler\DistributedRelease_Compiler\Compiler.exe

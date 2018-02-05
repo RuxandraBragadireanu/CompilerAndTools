@@ -1,0 +1,1 @@
+	printf("Number %d is even\n", n);

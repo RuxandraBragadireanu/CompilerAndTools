@@ -1,0 +1,36 @@
+	int nrprocs = GetNumItemsInVectorProcessItem(results);
+
+	int totalHeight = 0;
+	int width = 0;
+	int bpp = 0;
+	for (int i = 0; i < nrproc; i++)
+	{
+	SimpleProcessItem* pSBPP = (SimpleProcessItem*)GetVectorItemByIndex(results, i, 0);
+		bpp = ((IntDataItem*)pSBPP->GetItem(3))->GetValue();
+		width = ((IntDataItem*)pSBPP->GetItem(1))->GetValue();
+		totalHeight += ((IntDataItem*)pSBPP->GetItem(2))->GetValue();
+	}
+	
+	TGAReader::STGA outHeader;
+	outHeader.width = width;
+	outHeader.height = totalHeight;
+	outHeader.byteCount = bpp;
+	
+	FILE *file = fopen("output.tga", "wb");
+	TGAReader::saveTGAHeader(file, outHeader);
+	
+	int iBytesPerLine = outHeader.byteCount * outHeader.width;
+	for (int i = 0; i < nrprocs; i++)
+	{
+	SimpleProcessItem* pResult = (SimpleProcessItem*)GetVectorItemByIndex(results, i, 0);
+		BufferDataItem* pDataItem = (BufferDataItem*) pResult->GetItem(0);
+		
+		int iBeginOffset = iBytesPerLine * (i > 0);
+		int iReceivedLines = pDataItem->m_iBufferSize / iBytesPerLine;
+		unsigned int iSize = iBytesPerLine * (iReceivedLines - 1 - 1*(i > 0 && i < nrprocs-1));
+
+		printf("DEBUG: Lines received from processor %d. We printed %d of this file\n", iReceivedLines, iSize / iBytesPerLine);
+
+		fwrite(pDataItem->m_pData + iBeginOffset, sizeof(pDataItem->m_pData[0]), iSize, file);
+	}	
+	fclose(file);

@@ -1,0 +1,2 @@
+	TGAReader::STGA*  pTGAFile = (TGAReader::STGA*) imgoutputaddress;
+	TGAReader::saveTGA(*imgoutfilename, *pTGAFile);

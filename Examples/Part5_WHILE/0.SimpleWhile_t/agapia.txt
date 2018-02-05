@@ -1,0 +1,23 @@
+module MAIN{listen nil}{read n:int}
+{
+	while_t (n > 0)
+	{
+	 TESTANDGODOWN
+	}
+	%
+	IDENTITY
+}{speak nil}{write nil}
+
+module IDENTITY {listen nil} {read n:int}	@MASTER
+{
+	
+}{speak nil}{write nil}
+
+module TESTANDGODOWN {listen nil} {read n:int}	@MASTER
+{
+	if (n % 3 == 0)
+	{
+		printf("Number %d is a divisor of 3\n", n);
+	}
+	nn = n - 1;
+}{speak nil}{write nn:int}

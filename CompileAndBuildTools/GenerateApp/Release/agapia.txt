@@ -1,0 +1,59 @@
+module MAIN{listen nil}{read n:int, filea:string, fileb:string}
+{
+	READARRAYS
+	%
+	for_s(n)
+	{
+		COMPUTESINGLEDOT
+	}
+	%
+	COMBINEANDPRINTRESULT
+}{speak nil}{write nil}
+
+module READARRAYS{listen nil}{read n:int, filea:string, fileb:string} @MASTER
+{
+	FILE* fA = fopen(*filea, "r");
+	FILE* fB = fopen(*fileb, "r");
+	if (fA == NULL && fB == NULL)
+	{
+		printf("Input files doesn't exists. Exiting\n");
+		exit(3);
+	}
+
+	// Read numbers for file, and create a vector with pairs: a number from A, a number from B
+	for (int i = 0; i < n; i++)
+	{
+		int nrA, nrB;
+		fscanf(fA, "%d", &nrA);
+		fscanf(fB, "%d", &nrB);
+		
+		// Create a simple process input
+		SimpleProcessItem* pSI = new SimpleProcessItem();
+		// Add both numbers to it
+		AddSimpleValueType(pSI, nrA);
+		AddSimpleValueType(pSI, nrB);
+		
+		ArrayOfBaseProcessInputs arr;
+		AddProcessInput(arr, pSI);
+
+		AddInputItemToVector(&numbers, arr);
+	}
+}{speak nil}{write ((nra:int, nrb:int)numbers[];)}
+
+module COMPUTESINGLEDOT{listen nil}{read nra:int, nrb:int}
+{
+	nr = nra * nrb * 10;
+}{speak nil}{write nr:int}
+
+module COMBINEANDPRINTRESULT{listen nil}{read ((nr:int)numbers[];)} @MASTER
+{
+	int nrValues = GetNumItemsInVectorProcessItem(numbers);
+	int sum = 0;
+	for (int i = 0; i < nrValues; i++)
+	{
+		SimpleProcessItem* pSPI = (SimpleProcessItem*)GetVectorItemByIndex(numbers, i, 0);
+		IntDataItem* pIntData = (IntDataItem*)pSPI->GetItem(0);
+		sum += pIntData->GetValue();
+	}
+	printf("%d\n", sum);
+}{speak nil}{write nil}

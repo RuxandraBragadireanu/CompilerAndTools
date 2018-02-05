@@ -1,0 +1,8 @@
+#pragma once
+
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
+
+#define IGNORE_AGAPIA_DECL_AND_ASIGNMENTS
+
+#endif

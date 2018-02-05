@@ -1,0 +1,22 @@
+
+module DISPATCHJOBS { listen imageaddress : int } { read nrofprocs : int , filenameout : string }
+{
+	@
+}
+{ speak nrprocs : int } { write (( imageaddress : int, lineStart : int , height : int , rowStart : int, width : int ) tasksArray []) }
+
+module COMPUTEALLJOBS { listen nrprocs } { read (( imageaddress : int , lineStart : int , height : int , rowStart : int, width : int ) tasksArray []) }
+{
+	for_s (nrprocs)
+	{
+		COMPUTEJOB
+	}
+}
+{ speak nil } { write nil }
+
+module COMPUTEJOB { listen nil } { read imageaddress : int , lineStart : int , height : int , rowStart : int, width : int }
+{
+	@
+}
+
+

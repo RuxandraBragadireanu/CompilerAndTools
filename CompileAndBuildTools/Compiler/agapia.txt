@@ -1,0 +1,17 @@
+module MAIN{listen nil}{read nil}
+{
+   READ $ MIN
+}{speak nil}{write nil}
+
+module READ{listen nil}{read nil}
+{
+   scanf("%d %d", &n, &m); 
+}{speak n:int}{write m:int}
+
+module MIN{listen n:int}{read m:int}
+{
+	if (n > m)
+		printf("Minimum is %d\n", m);
+	else
+		printf("Minimum is %d\n", n);
+}{speak nil}{write nil}

@@ -1,0 +1,3 @@
+n	10
+filea	A.txt
+fileb	B.txt

@@ -1,0 +1,77 @@
+	struct TaskDesc
+	{
+		int iLineStart, iHeight;
+		int iRowStart, iWidth;
+	};
+
+	TaskDesc task;
+	task.iLineStart = linestart;
+	task.iHeight = height;
+	task.iRowStart = 0;
+	task.iWidth = width;
+
+	TGAReader::STGA* pInImage = (TGAReader::STGA*) imageaddress;
+	TGAReader::STGA* pOutImage = (TGAReader::STGA*) outputaddress;
+
+	static float kThresholdValue = 70.0f;
+	static int GDxy[2][3][3] ={ { { -1, 0, 1, },
+								{ -2, 0 ,2, },
+								{ -1, 0, 1, }
+								},
+
+								{ { -1, -2, -1, },
+								{ 0, 0, 0, },
+								{ +1, +2, +1, }
+								},
+						};
+
+	int imageLineBytes = pInImage->byteCount * pInImage->width;
+	int pixelBytes = pInImage->byteCount;
+	unsigned char *pInputCurrentPos = &pInImage->data[imageLineBytes * task.iLineStart];
+	unsigned char *pOutputCurrentPos = &pOutImage->data[imageLineBytes * task.iLineStart];
+
+	if (task.iLineStart == 0)
+	{
+		memcpy(pOutputCurrentPos, pInputCurrentPos, imageLineBytes);
+		pInputCurrentPos += imageLineBytes;
+		pOutputCurrentPos += imageLineBytes;
+		task.iLineStart = 1;
+	}
+	if (task.iLineStart + task.iHeight == pInImage->height)
+	{
+		unsigned char* pInputLastLine = &pInImage->data[imageLineBytes * (task.iLineStart + task.iHeight - 1)];
+		unsigned char* pOutputLastLine = &pOutImage->data[imageLineBytes * (task.iLineStart + task.iHeight - 1)];
+		memcpy(pOutputLastLine, pInputLastLine, imageLineBytes);
+
+		task.iHeight--;
+	}
+
+	for (int i = 0; i < task.iHeight; i++)
+	{
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+
+		pInputCurrentPos += pixelBytes; 
+		pOutputCurrentPos += pixelBytes;
+
+		for (int j = 1; j < task.iWidth - 1; j++, pInputCurrentPos += pixelBytes, pOutputCurrentPos += pixelBytes)
+		{
+			int Gradients[2] = {0};
+			for (int gIdx = 0; gIdx < 2; gIdx++)
+				for (int dxI = -1; dxI <= 1; dxI++)
+					for (int dxJ = -1; dxJ <= 1; dxJ++)
+						Gradients[gIdx] += GDxy[gIdx][dxI+1][dxJ+1]*pInImage->FuncGetGreyValue(pInputCurrentPos - dxI*imageLineBytes - dxJ*pixelBytes);
+
+			float fValue = sqrtf(Gradients[0]*Gradients[0] + Gradients[1]*Gradients[1] + 0.0f);
+			
+			
+			if (fValue > kThresholdValue)
+				pOutImage->SetGreyValue(pOutputCurrentPos, 255);
+			else
+				pOutImage->SetGreyValue(pOutputCurrentPos, 0);
+		}
+
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+
+		pInputCurrentPos += pixelBytes;
+		pOutputCurrentPos += pixelBytes;
+	}

@@ -1,0 +1,5 @@
+	if (n % 3 == 0)
+	{
+		printf("Number %d is a divisor of 3\n", n);
+	}
+	nn = n - 1;

@@ -1,0 +1,8 @@
+% // Specify the include files, one per line
+#include <stdio.h>
+#include <math.h>
+% // Specify the include directories
+% // Specify the library directories
+% // Specify the additional linker files
+%
+Fisierumeu.cpp

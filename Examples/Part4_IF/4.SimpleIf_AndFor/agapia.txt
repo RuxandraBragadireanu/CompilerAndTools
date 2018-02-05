@@ -1,0 +1,59 @@
+module MAIN{listen nil}{read n:int, file:string}
+{
+	READARRAYS
+	%
+	foreach_s(n)
+	{
+		if (nr % 2 == 0)
+		{
+			IDENTITY
+		}
+		else
+		{
+			CONVERTTOEVEN
+		}
+	}
+	%
+	COMBINEANDPRINTRESULT
+}{speak nil}{write nil}
+
+module READARRAYS{listen nil}{read n:int, file:string}	@MASTER
+{	
+	FILE* fA = fopen(*file, "r");
+	if (fA == NULL)
+	{
+		printf("Input files doesn't exists. Exiting\n");
+		exit(3);
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		int nrA;
+		fscanf(fA, "%d", &nrA);	
+		numbers@[i].number = nrA;
+	}
+}{speak nil}{write ((number:int)numbers[];)}
+
+module IDENTITY{listen nil}{read nr:int}
+{
+	nrout = nr;
+}{speak nil}{write nrout:int}
+
+module CONVERTTOEVEN{listen nil}{read nr:int}
+{
+	nrout = nr + rand()%2;
+}{speak nil}{write nrout:int}
+
+module COMBINEANDPRINTRESULT{listen nil}{read ((nr:int)numbers[];)}	@MASTER
+{
+	int nrValues = GetNumItemsInVectorProcessItem(numbers);
+	int sum = 0;
+	for (int i = 0; i < nrValues; i++)
+	{
+		SimpleProcessItem* pSPI = numbers@[i];
+		IntDataItem* pIntData = (IntDataItem*)pSPI->GetItem(0);
+		sum += pIntData->GetValue();
+	}
+
+	printf("%d\n", sum);	
+}{speak nil}{write nil}

@@ -1,0 +1,10 @@
+	TGAReader::STGA* tgaFile = new TGAReader::STGA();
+	TGAReader::loadTGA(*filenamein, *tgaFile);
+	imageaddress = (int) tgaFile;
+
+	TGAReader::STGA* outFile = new TGAReader::STGA();
+	outFile->byteCount = tgaFile->byteCount;
+	outFile->width = tgaFile->width;
+	outFile->height = tgaFile->height;
+	outFile->data = new unsigned char[tgaFile->width * tgaFile->height * tgaFile->byteCount];
+	outputaddress = (int) outFile;

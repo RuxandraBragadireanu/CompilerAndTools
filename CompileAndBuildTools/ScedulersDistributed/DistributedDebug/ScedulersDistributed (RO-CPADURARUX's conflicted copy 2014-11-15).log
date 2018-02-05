@@ -1,0 +1,17 @@
+﻿Build started 11/15/2014 2:57:04 PM.
+     1>Project "C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\ScedulersDistributed\ScedulersDistributed.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "DistributedDebug\ScedulersDistributed.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Lib:
+         All outputs are up-to-date.
+         ScedulersDistributed.vcxproj -> C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\DistributedDebug\ScedulersDistributed.lib
+       FinalizeBuildStatus:
+         Deleting file "DistributedDebug\ScedulersDistributed.unsuccessfulbuild".
+         Touching "DistributedDebug\ScedulersDistributed.lastbuildstate".
+     1>Done Building Project "C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\ScedulersDistributed\ScedulersDistributed.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.10

@@ -1,0 +1,7 @@
+#ifndef SIMULATION_PARAMS_H
+#define SIMULATION_PARAMS_H
+
+#define INITIAL_TASKS_NUM	10
+
+
+#endif
