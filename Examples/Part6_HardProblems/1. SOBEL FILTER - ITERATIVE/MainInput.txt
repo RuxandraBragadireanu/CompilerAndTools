@@ -1,3 +1,0 @@
-filenamein		images.tga
-nrofprocs		3
-filenameout		output.tga

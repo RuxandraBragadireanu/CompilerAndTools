@@ -1,6 +1,0 @@
-% // Include files
-#include <stdio.h>
-% // Additional include directories
-% // Additional library directories
-% // Additional linker libs/dll etc
-% // Additional source files

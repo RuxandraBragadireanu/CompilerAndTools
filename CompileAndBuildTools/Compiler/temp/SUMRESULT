@@ -1,1 +1,0 @@
-	printf("Sum result is %d\n", res);

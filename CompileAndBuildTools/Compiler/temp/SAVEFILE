@@ -1,3 +1,0 @@
-	printf("Number of procs: %d output file: %s\n", nrprocs, *imgoutfilename);
-	TGAReader::STGA*  pTGAFile = (TGAReader::STGA*) imgoutputaddress;
-	TGAReader::saveTGA(*imgoutfilename, *pTGAFile);
