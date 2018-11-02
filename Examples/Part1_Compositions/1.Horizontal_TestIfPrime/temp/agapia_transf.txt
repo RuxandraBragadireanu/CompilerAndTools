@@ -1,0 +1,15 @@
+module MAIN {listen nil}{read nil}
+{
+  READ # PRIMETEST
+}{speak nil}{write nil}
+
+module READ {listen nil}{read nil}
+{
+	@
+}{speak n:int}{write nil}
+
+module PRIMETEST{listen n:int}{read nil}
+{
+	@
+}{speak nil}{write nil}
+
