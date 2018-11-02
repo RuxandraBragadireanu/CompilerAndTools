@@ -1,0 +1,197 @@
+module MAIN { listen nil } { read filenamein : string ; nrofprocs : int }
+{
+	READ # DISPATCHJOBS
+	% 
+	COMPUTEALLJOBS    
+}{ speak nil } { write nil }
+
+module READ { listen nil } { read filenamein: string } @MASTER
+{
+	TGAReader::STGA* tgaFile = new TGAReader::STGA();
+	TGAReader::loadTGA(*filenamein, *tgaFile);
+
+	//printf("File received to read from: %s\n", *filenamein);
+	imageaddress = (int) tgaFile;
+}{ speak imageaddress : int} { write nil }
+
+module DISPATCHJOBS { listen imageaddress : int} { read nrofprocs : int } @MASTER
+{
+	// Clear first to be safe :)
+	ClearVectorOfProcessItems(&tasks);
+	nrprocs = nrofprocs;
+	
+	// Take and recover the header
+	TGAReader::STGA*  pTGAFile = (TGAReader::STGA*) imageaddress;
+	const int pixelBytes = pTGAFile->byteCount;
+	const int imageLineBytes = pixelBytes * pTGAFile->width;
+	
+	// Set up the tasks
+	int iLinesPerProc = pTGAFile->height / nrofprocs;
+	int iLinesToAddOne = pTGAFile->height % nrofprocs;
+	int iLineIndex = 0;
+	for (int i = 0; i < nrofprocs; i++)
+	{
+		int linesToThisProc = iLinesPerProc + (iLinesToAddOne > i ? 1 : 0);
+	
+		// Every index with the exception of the first one, and last one 
+		unsigned int iDataSize = imageLineBytes*(linesToThisProc + 2 - 1*(i == 0 || i == (nrofprocs-1)));
+		// Every index with the exception of first, gets a previous line
+		unsigned char* pDataBegin = (unsigned char*) &pTGAFile->data[imageLineBytes * (iLineIndex - 1 * (i > 0))];	
+
+		// For the first row we would like to not modify the first row of pixels
+		int lineStart = iLineIndex + 1*(i == 0);
+		int numRows = linesToThisProc - 1*(i == 0 || i == (nrofprocs-1));	
+	
+		tasks@[i].objects = <pDataBegin, iDataSize>;
+		tasks@[i].rowstart = lineStart;
+		tasks@[i].numrows = numRows;
+		tasks@[i].colstart = 0;
+		tasks@[i].width = pTGAFile->width;
+		
+		iLineIndex += linesToThisProc;
+	}
+}{ speak nil } { write nrprocs : int ; (( objects : buffer, rowstart : int , numrows : int , colstart: int, width : int ) tasks [];) }
+
+module COMPUTEALLJOBS { listen nil } { read nrprocs : int ; ((objects : buffer, r : int , c : int , width : int, height : int ) tasks [];) }
+{
+	// I (identity module was used here to 'eat' the nrprocs input from north interface
+	I # foreach_s (nrprocs)
+	    {   
+		 COMPUTEJOB
+	    }	
+	    % 	
+	    SAVEFILE
+}{ speak nil } { write nil }
+
+module COMPUTEJOB { listen nil } { read imagebuffer : buffer, linestart : int , height : int , colstart : int, width : int  }
+{
+	printf("Job received with (ls: %d, h: %d, rs: %d, w: %d)\n", linestart, height, colstart, width);
+	struct TaskDesc
+	{
+		int iLineStart, iHeight;
+		int iColStart, iWidth;
+	};
+	
+	TaskDesc task;
+	task.iLineStart = linestart;
+	task.iHeight = height;
+	task.iColStart = colstart;
+	task.iWidth = width;
+	
+	static float kThresholdValue = 70.0f;
+	// GDxy[0] - first gradient, GDxy[1] second one
+	static int GDxy[2][3][3] ={ { { -1, 0, 1, },
+								{ -2, 0 ,2, },
+								{ -1, 0, 1, }
+								},
+	
+								{ { -1, -2, -1, },
+								{ 0, 0, 0, },
+								{ +1, +2, +1, }
+								},
+						};
+	
+
+	const int pixelBytes = 3;
+	const int imageLineBytes = pixelBytes * task.iWidth;
+	
+	unsigned char *pInputCurrentPos = (unsigned char*) imagebuffer->m_pData;
+	unsigned char *pOutputCurrentPos = new unsigned char[imagebuffer->m_iBufferSize];
+	imageoutbuffer->m_pData = (char*)pOutputCurrentPos;
+	imageoutbuffer->m_iBufferSize = imagebuffer->m_iBufferSize;
+	
+	// Preserve the first and last row (maybe it's a better idea to avoid it)
+	memcpy(pOutputCurrentPos, pInputCurrentPos, imageLineBytes);
+	pOutputCurrentPos += imageLineBytes;
+	pInputCurrentPos += imageLineBytes;
+
+	memcpy(pOutputCurrentPos + (imageLineBytes * task.iHeight), pInputCurrentPos + (imageLineBytes * task.iHeight), imageLineBytes);
+	
+	int beginRow = task.iLineStart; 
+	int endRow = beginRow + task.iHeight - 1;
+	for (int i = beginRow; i <= endRow; i++)
+	{
+		// Don't do nothing with the first column pixel
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+	
+		pInputCurrentPos += pixelBytes; 
+		pOutputCurrentPos += pixelBytes;
+	
+		for (int j = 1; j < task.iWidth - 1; j++, pInputCurrentPos += pixelBytes, pOutputCurrentPos += pixelBytes)
+		{
+			// Compute the gradients 
+			int Gradients[2] = {0};
+			for (int gIdx = 0; gIdx < 2; gIdx++)
+				for (int dxI = -1; dxI <= 1; dxI++)
+					for (int dxJ = -1; dxJ <= 1; dxJ++)
+						Gradients[gIdx] += GDxy[gIdx][dxI+1][dxJ+1]*TGAReader::STGA::S_FuncGetGreyValue(pInputCurrentPos - dxI*imageLineBytes - dxJ*pixelBytes);
+	
+			float fValue = sqrtf(Gradients[0]*Gradients[0] + Gradients[1]*Gradients[1] + 0.0f);			
+			if (fValue > kThresholdValue)
+				TGAReader::STGA::S_SetGreyValue(pOutputCurrentPos, 255);
+			else
+				TGAReader::STGA::S_SetGreyValue(pOutputCurrentPos, 0);
+		}
+	
+		// Don't do nothing with the last column pixel
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+	
+		pInputCurrentPos += pixelBytes;
+		pOutputCurrentPos += pixelBytes;
+	}
+	
+	// Complete other data needed by the saving process
+	outwidth = width;
+	outheight = height;
+	outbpp = pixelBytes;
+} {speak nil } { write imageoutbuffer : buffer, outwidth : int, outheight : int, outbpp : int }
+
+module SAVEFILE { listen nil } { read ((imageoutbuffer : buffer, width : int, height : int, bytesperpixel : int) results[];) }
+{
+	int nrprocs = GetNumItemsInVectorProcessItem(results);
+
+	// Test the results validity and get the total width, height and bytes perpixel of the header
+	int totalHeight = 0;
+	int width = 0;
+	int bpp = 0;
+	for (int i = 0; i < nrprocs; i++)
+	{
+		SimpleProcessItem* pSBPP = results@[i];
+		bpp = ((IntDataItem*)pSBPP->GetItem(3))->GetValue();
+		width = ((IntDataItem*)pSBPP->GetItem(1))->GetValue();
+		totalHeight += ((IntDataItem*)pSBPP->GetItem(2))->GetValue();
+	}
+	
+	// Set up and save the header
+	TGAReader::STGA outHeader;
+	outHeader.width = width;
+	outHeader.height = totalHeight;
+	outHeader.byteCount = bpp;
+	
+	FILE *file = fopen("output.tga", "wb");
+	TGAReader::saveTGAHeader(file, outHeader);
+	
+	// Save file parts
+	int iBytesPerLine = outHeader.byteCount * outHeader.width;
+	for (int i = 0; i < nrprocs; i++)
+	{
+		SimpleProcessItem* pResult = results@[i];
+		BufferDataItem* pDataItem = (BufferDataItem*) pResult->GetItem(0);
+		
+		int iBeginOffset = iBytesPerLine * (i > 0);
+		int iReceivedLines = pDataItem->m_iBufferSize / iBytesPerLine;
+		unsigned int iSize = iBytesPerLine * (iReceivedLines - 1 - 1*(i > 0 && i < nrprocs-1));
+
+		// DELETE NEXT LINE
+		//printf("DEBUG: Lines received from processor %d. We printed %d of this file\n", iReceivedLines, iSize / iBytesPerLine);
+		// DEBUG ENDS HERE
+
+		fwrite(pDataItem->m_pData + iBeginOffset, sizeof(pDataItem->m_pData[0]), iSize, file);
+	}	
+	fclose(file);
+}{ speak nil} { write nil}
+
+module I {listen nil } { read n:int}
+{
+
+}{speak nil} { write nil }

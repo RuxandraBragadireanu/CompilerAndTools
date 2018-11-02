@@ -1,0 +1,4 @@
+	TGAReader::STGA* tgaFile = new TGAReader::STGA();
+	TGAReader::loadTGA(*filenamein, *tgaFile);
+
+	imageaddress = (int) tgaFile;

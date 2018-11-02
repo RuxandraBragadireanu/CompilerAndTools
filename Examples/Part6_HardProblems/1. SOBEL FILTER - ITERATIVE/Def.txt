@@ -1,0 +1,9 @@
+% // Include files
+#include <stdio.h>
+#include <math.h>
+#include "TGAReader.h"
+% // Additional include directories
+% // Additional library directories
+% // Additional linker libs/dll etc
+% // Additional source files
+TGAReader.cpp

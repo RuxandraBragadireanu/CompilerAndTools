@@ -1,0 +1,42 @@
+module MAIN { listen nil } { read filenamein : string ; nrofprocs : int }
+{
+	READ # DISPATCHJOBS
+	% 
+	COMPUTEALLJOBS    
+}{ speak nil } { write nil }
+
+module READ { listen nil } { read filenamein: string } 
+{
+	@MASTER
+}{ speak imageaddress : int} { write nil }
+
+module DISPATCHJOBS { listen imageaddress : int} { read nrofprocs : int } 
+{
+	@MASTER
+}{ speak nil } { write nrprocs : int ; (( objects : buffer, rowstart : int , numrows : int , colstart: int, width : int ) tasks [];) }
+
+module COMPUTEALLJOBS { listen nil } { read nrprocs : int ; ((objects : buffer, r : int , c : int , width : int, height : int ) tasks [];) }
+{
+	I # foreach_s (nrprocs)
+	    {   
+		 COMPUTEJOB
+	    }	
+	    % 	
+	    SAVEFILE
+}{ speak nil } { write nil }
+
+module COMPUTEJOB { listen nil } { read imagebuffer : buffer, linestart : int , height : int , colstart : int, width : int  }
+{
+	@
+} {speak nil } { write imageoutbuffer : buffer, outwidth : int, outheight : int, outbpp : int }
+
+module SAVEFILE { listen nil } { read ((imageoutbuffer : buffer, width : int, height : int, bytesperpixel : int) results[];) }
+{
+	@
+}{ speak nil} { write nil}
+
+module I {listen nil } { read n:int}
+{
+	@
+}{speak nil} { write nil }
+

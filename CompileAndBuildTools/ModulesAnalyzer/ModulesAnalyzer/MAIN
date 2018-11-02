@@ -1,0 +1,8 @@
+   if (n % 2 == 0)
+   {
+		ODDNUMBER
+   }
+   else
+   {
+		EVENNUMBER
+   }

@@ -1,0 +1,17 @@
+#ifndef EXECUTION_STRATEGY_DEFINES
+#define EXECUTION_STRATEGY_DEFINES
+
+// !!!!!! ---- Use only one strategy ------ !!!!!!!
+#define USE_SERIAL_STRATEGY				1
+#define USE_MPI_STRATEGY				2
+#define USE_SHARED_PARALLEL_STRATEGY	3
+#define USE_GPU_STRATEGY				4
+
+
+#ifndef EXECUTION_STRATEGY_ITERATIVE
+#define EXECUTION_STRATEGY    USE_MPI_STRATEGY
+#else
+#define EXECUTION_STRATEGY    USE_SERIAL_STRATEGY
+#endif
+
+#endif

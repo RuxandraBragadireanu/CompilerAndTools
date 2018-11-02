@@ -1,0 +1,160 @@
+module MAIN { listen nil } { read filenamein : string ; nrofprocs : int , filenameout : string }
+{
+	(READ # DISPATCHJOBS)  $ 
+	        COMPUTEALLJOBS	        
+}{ speak nil } { write nil }
+
+module READ { listen nil } { read filenamein: string }
+{
+	TGAReader::STGA* tgaFile = new TGAReader::STGA();
+	TGAReader::loadTGA(*filenamein, *tgaFile);
+	//printf("File received to read from: %s\n", *filenamein);
+	imageaddress = (int) tgaFile;
+
+	// Create and initialize the output image
+	TGAReader::STGA* outFile = new TGAReader::STGA();
+	outFile->byteCount = tgaFile->byteCount;
+	outFile->width = tgaFile->width;
+	outFile->height = tgaFile->height;
+	outFile->data = new unsigned char[tgaFile->width * tgaFile->height * tgaFile->byteCount];
+	outputaddress = (int) outFile;
+}{ speak imageaddress : int, outputaddress : int } { write nil }
+
+module DISPATCHJOBS { listen imageaddress : int, outputaddress : int } { read nrofprocs : int , filenameout : string }
+{
+	// Clear first to be safe :)
+	ClearVectorOfProcessItems(&tasks);
+	nrprocs = nrofprocs;
+	imgoutputaddress = outputaddress;
+	*imgoutfilename = *filenameout;
+
+	// Take and recover the header
+	TGAReader::STGA*  pTGAFile = (TGAReader::STGA*) imageaddress;
+	int iLinesPerProc = pTGAFile->height / nrofprocs;
+	int iLinesToAddOne = pTGAFile->height % nrofprocs;
+	int iLineIndex = 0;
+	for (int i = 0; i < nrofprocs; i++)
+	{
+		int linesToThisProc = iLinesPerProc + (iLinesToAddOne > i ? 1 : 0);
+
+		// Create the simple process item with data for this process
+		tasks@[i].imageaddress 	= 	imageaddress;
+		tasks@[i].outputaddress	=	outputaddress;
+		tasks@[i].linestart	=	iLineIndex;
+		tasks@[i].height	=	linesToThisProc;
+		tasks@[i].rowstart	=	0;
+		tasks@[i].width		=	pTGAFile->width;
+
+		iLineIndex += linesToThisProc;
+	}
+}{ speak nrprocs : int, imgoutputaddress : int, imgoutfilename : string } { write (( imageaddress : int, outputaddress : int, linestart : int , height : int , rowstart : int, width : int ) tasks [];) }
+
+module COMPUTEALLJOBS { listen nrprocs : int, imgoutputaddress : int, imgoutfilename : string } { read (( imageaddress : int, outputaddress : int, linestart : int , height : int , rowstart : int, width : int ) tasks [];) }
+{
+	foreach_s (nrprocs)
+	{
+		COMPUTEJOB
+	}
+	% 
+	SAVEFILE
+}{ speak nil } { write nil }
+
+module COMPUTEJOB { listen nil } { read imageaddress : int , outputaddress : int, linestart : int , height : int , rowstart : int, width : int }
+{
+	//printf("Job received with image input address %d, output address %d, (ls: %d, h: %d, rs: %d, w: %d)\n", imageaddress, outputaddress, linestart, height, rowstart, width);
+	struct TaskDesc
+	{
+		int iLineStart, iHeight;
+		int iRowStart, iWidth;
+	};
+
+	TaskDesc task;
+	task.iLineStart = linestart;
+	task.iHeight = height;
+	task.iRowStart = 0;
+	task.iWidth = width;
+
+	TGAReader::STGA* pInImage = (TGAReader::STGA*) imageaddress;
+	TGAReader::STGA* pOutImage = (TGAReader::STGA*) outputaddress;
+
+	static float kThresholdValue = 70.0f;
+	// GDxy[0] - first gradient, GDxy[1] second one
+	static int GDxy[2][3][3] ={ { { -1, 0, 1, },
+								{ -2, 0 ,2, },
+								{ -1, 0, 1, }
+								},
+
+								{ { -1, -2, -1, },
+								{ 0, 0, 0, },
+								{ +1, +2, +1, }
+								},
+						};
+
+	int imageLineBytes = pInImage->byteCount * pInImage->width;
+	int pixelBytes = pInImage->byteCount;
+	unsigned char *pInputCurrentPos = &pInImage->data[imageLineBytes * task.iLineStart];
+	unsigned char *pOutputCurrentPos = &pOutImage->data[imageLineBytes * task.iLineStart];
+
+	// Don't nodify the first and last row, and first and last column
+	// Maybe it was better to do this at tasks distribution......
+	if (task.iLineStart == 0)
+	{
+		// Copy first row and advance the pointers
+		memcpy(pOutputCurrentPos, pInputCurrentPos, imageLineBytes);
+		pInputCurrentPos += imageLineBytes;
+		pOutputCurrentPos += imageLineBytes;
+		task.iLineStart = 1;
+	}
+	if (task.iLineStart + task.iHeight == pInImage->height)
+	{
+		// Copy last row
+		unsigned char* pInputLastLine = &pInImage->data[imageLineBytes * (task.iLineStart + task.iHeight - 1)];
+		unsigned char* pOutputLastLine = &pOutImage->data[imageLineBytes * (task.iLineStart + task.iHeight - 1)];
+		memcpy(pOutputLastLine, pInputLastLine, imageLineBytes);
+
+		task.iHeight--;
+	}
+
+	for (int i = 0; i < task.iHeight; i++)
+	{
+		// Don't do nothing with the first column pixel
+		//VerifyOutFileWrite(pOutputCurrentPos, pixelBytes);
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+
+		pInputCurrentPos += pixelBytes; 
+		pOutputCurrentPos += pixelBytes;
+
+		for (int j = 1; j < task.iWidth - 1; j++, pInputCurrentPos += pixelBytes, pOutputCurrentPos += pixelBytes)
+		{
+			// Compute the gradients 
+			int Gradients[2] = {0};
+			for (int gIdx = 0; gIdx < 2; gIdx++)
+				for (int dxI = -1; dxI <= 1; dxI++)
+					for (int dxJ = -1; dxJ <= 1; dxJ++)
+						Gradients[gIdx] += GDxy[gIdx][dxI+1][dxJ+1]*pInImage->FuncGetGreyValue(pInputCurrentPos - dxI*imageLineBytes - dxJ*pixelBytes);
+
+			float fValue = sqrtf(Gradients[0]*Gradients[0] + Gradients[1]*Gradients[1] + 0.0f);
+			
+			//VerifyOutFileWrite(pOutputCurrentPos, pixelBytes);
+			
+			if (fValue > kThresholdValue)
+				pOutImage->SetGreyValue(pOutputCurrentPos, 255);
+			else
+				pOutImage->SetGreyValue(pOutputCurrentPos, 0);
+		}
+
+		// Don't do nothing with the last column pixel
+		//VerifyOutFileWrite(pOutputCurrentPos, pixelBytes);
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+
+		pInputCurrentPos += pixelBytes;
+		pOutputCurrentPos += pixelBytes;
+	}
+}{speak nil } { write succed : int }
+
+module SAVEFILE { listen nrprocs : int, imgoutputaddress : int, imgoutfilename : string } { read (( succed : int ) succedarray [];) }
+{
+	//printf("Number of procs: %d output file: %s\n", nrprocs, *imgoutfilename);
+	TGAReader::STGA*  pTGAFile = (TGAReader::STGA*) imgoutputaddress;
+	TGAReader::saveTGA(*imgoutfilename, *pTGAFile);
+}{speak nil } { write nil }

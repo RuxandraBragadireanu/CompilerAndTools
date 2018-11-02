@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScedulersDistributed", "ScedulersDistributed\ScedulersDistributed.vcxproj", "{61D742FA-9044-4A19-A32F-87322179997B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{8D25182F-B6FF-44E1-8E62-31155A20C12F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DistributedDebug|Win32 = DistributedDebug|Win32
+		DistributedDebug|x64 = DistributedDebug|x64
+		DistributedRelease|Win32 = DistributedRelease|Win32
+		DistributedRelease|x64 = DistributedRelease|x64
+		IterativeDebug|Win32 = IterativeDebug|Win32
+		IterativeDebug|x64 = IterativeDebug|x64
+		IterativeRelease|Win32 = IterativeRelease|Win32
+		IterativeRelease|x64 = IterativeRelease|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedDebug|Win32.ActiveCfg = DistributedDebug_Compiler|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedDebug|Win32.Build.0 = DistributedDebug_Compiler|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedDebug|x64.ActiveCfg = IterativeRelease|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedDebug|x64.Build.0 = IterativeRelease|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedRelease|Win32.ActiveCfg = DistributedRelease_Compiler|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedRelease|Win32.Build.0 = DistributedRelease_Compiler|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedRelease|x64.ActiveCfg = IterativeRelease|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.DistributedRelease|x64.Build.0 = IterativeRelease|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.IterativeDebug|Win32.ActiveCfg = IterativeDebug|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.IterativeDebug|Win32.Build.0 = IterativeDebug|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.IterativeDebug|x64.ActiveCfg = IterativeDebug|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.IterativeRelease|Win32.ActiveCfg = IterativeRelease|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.IterativeRelease|Win32.Build.0 = IterativeRelease|Win32
+		{61D742FA-9044-4A19-A32F-87322179997B}.IterativeRelease|x64.ActiveCfg = IterativeRelease|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedDebug|Win32.ActiveCfg = DistributedDebug_Compiler|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedDebug|Win32.Build.0 = DistributedDebug_Compiler|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedDebug|x64.ActiveCfg = DistributedDebug_Compiler|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedDebug|x64.Build.0 = DistributedDebug_Compiler|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedRelease|Win32.ActiveCfg = DistributedRelease_Compiler|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedRelease|Win32.Build.0 = DistributedRelease_Compiler|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedRelease|x64.ActiveCfg = DistributedRelease_Compiler|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.DistributedRelease|x64.Build.0 = DistributedRelease_Compiler|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeDebug|Win32.ActiveCfg = IterativeDebug|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeDebug|Win32.Build.0 = IterativeDebug|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeDebug|x64.ActiveCfg = IterativeDebug|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeDebug|x64.Build.0 = IterativeDebug|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeRelease|Win32.ActiveCfg = IterativeRelease|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeRelease|Win32.Build.0 = IterativeRelease|Win32
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeRelease|x64.ActiveCfg = IterativeRelease|x64
+		{8D25182F-B6FF-44E1-8E62-31155A20C12F}.IterativeRelease|x64.Build.0 = IterativeRelease|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C00AEC1F-463D-4C05-B470-BFDD30436ABC}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal

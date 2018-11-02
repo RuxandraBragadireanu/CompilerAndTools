@@ -1,0 +1,22 @@
+	ClearVectorOfProcessItems(&tasks);
+	nrprocs = nrofprocs;
+	imgoutputaddress = outputaddress;
+	*imgoutfilename = *filenameout;
+
+	TGAReader::STGA*  pTGAFile = (TGAReader::STGA*) imageaddress;
+	int iLinesPerProc = pTGAFile->height / nrofprocs;
+	int iLinesToAddOne = pTGAFile->height % nrofprocs;
+	int iLineIndex = 0;
+	for (int i = 0; i < nrofprocs; i++)
+	{
+		int linesToThisProc = iLinesPerProc + (iLinesToAddOne > i ? 1 : 0);
+
+	SetInputItemToVector(41, &tasks, i, "imageaddress", imageaddress);
+	SetInputItemToVector(42, &tasks, i, "outputaddress", outputaddress);
+	SetInputItemToVector(43, &tasks, i, "linestart", iLineIndex);
+	SetInputItemToVector(44, &tasks, i, "height", linesToThisProc);
+	SetInputItemToVector(45, &tasks, i, "rowstart", 0);
+	SetInputItemToVector(46, &tasks, i, "width", pTGAFile->width);
+
+		iLineIndex += linesToThisProc;
+	}

@@ -1,0 +1,73 @@
+	printf("Job received with (ls: %d, h: %d, rs: %d, w: %d)\n", linestart, height, colstart, width);
+	struct TaskDesc
+	{
+		int iLineStart, iHeight;
+		int iColStart, iWidth;
+	};
+	
+	TaskDesc task;
+	task.iLineStart = linestart;
+	task.iHeight = height;
+	task.iColStart = colstart;
+	task.iWidth = width;
+	
+	static float kThresholdValue = 70.0f;
+	static int GDxy[2][3][3] ={ { { -1, 0, 1, },
+								{ -2, 0 ,2, },
+								{ -1, 0, 1, }
+								},
+	
+								{ { -1, -2, -1, },
+								{ 0, 0, 0, },
+								{ +1, +2, +1, }
+								},
+						};
+	
+
+	const int pixelBytes = 3;
+	const int imageLineBytes = pixelBytes * task.iWidth;
+	
+	unsigned char *pInputCurrentPos = (unsigned char*) imagebuffer->m_pData;
+	unsigned char *pOutputCurrentPos = new unsigned char[imagebuffer->m_iBufferSize];
+	imageoutbuffer->m_pData = (char*)pOutputCurrentPos;
+	imageoutbuffer->m_iBufferSize = imagebuffer->m_iBufferSize;
+	
+	memcpy(pOutputCurrentPos, pInputCurrentPos, imageLineBytes);
+	pOutputCurrentPos += imageLineBytes;
+	pInputCurrentPos += imageLineBytes;
+
+	memcpy(pOutputCurrentPos + (imageLineBytes * task.iHeight), pInputCurrentPos + (imageLineBytes * task.iHeight), imageLineBytes);
+	
+	int beginRow = task.iLineStart; 
+	int endRow = beginRow + task.iHeight - 1;
+	for (int i = beginRow; i <= endRow; i++)
+	{
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+	
+		pInputCurrentPos += pixelBytes; 
+		pOutputCurrentPos += pixelBytes;
+	
+		for (int j = 1; j < task.iWidth - 1; j++, pInputCurrentPos += pixelBytes, pOutputCurrentPos += pixelBytes)
+		{
+			int Gradients[2] = {0};
+			for (int gIdx = 0; gIdx < 2; gIdx++)
+				for (int dxI = -1; dxI <= 1; dxI++)
+					for (int dxJ = -1; dxJ <= 1; dxJ++)
+						Gradients[gIdx] += GDxy[gIdx][dxI+1][dxJ+1]*TGAReader::STGA::S_FuncGetGreyValue(pInputCurrentPos - dxI*imageLineBytes - dxJ*pixelBytes);
+	
+			float fValue = sqrtf(Gradients[0]*Gradients[0] + Gradients[1]*Gradients[1] + 0.0f);			
+			if (fValue > kThresholdValue)
+				TGAReader::STGA::S_SetGreyValue(pOutputCurrentPos, 255);
+			else
+				TGAReader::STGA::S_SetGreyValue(pOutputCurrentPos, 0);
+		}
+	
+		memcpy(pOutputCurrentPos, pInputCurrentPos, pixelBytes);
+	
+		pInputCurrentPos += pixelBytes;
+		pOutputCurrentPos += pixelBytes;
+	}
+	
+	outwidth = width;
+	outheight = height;
+	outbpp = pixelBytes;

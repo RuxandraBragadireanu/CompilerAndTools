@@ -1,0 +1,13 @@
+G:\Dropbox\AGAPIACompilerCopy\Compiler\SolutionModifyApp\SolutionModifyApp\bin\Release\SolutionModifyApp.exe
+G:\Dropbox\AGAPIACompilerCopy\Compiler\SolutionModifyApp\SolutionModifyApp\bin\Release\SolutionModifyApp.pdb
+G:\Dropbox\AGAPIACompilerCopy\Compiler\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.exe
+G:\Dropbox\AGAPIACompilerCopy\Compiler\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.pdb
+C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.exe
+C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.pdb
+C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\SolutionModifyApp\SolutionModifyApp\bin\Release\SolutionModifyApp.exe
+C:\Users\CPaduraru\Dropbox\AGAPIACompilerCopy2\Compiler\SolutionModifyApp\SolutionModifyApp\bin\Release\SolutionModifyApp.pdb
+C:\AGAPIA\CompilerAndTools-master\CompileAndBuildTools\SolutionModifyApp\SolutionModifyApp\bin\Release\SolutionModifyApp.exe
+C:\AGAPIA\CompilerAndTools-master\CompileAndBuildTools\SolutionModifyApp\SolutionModifyApp\bin\Release\SolutionModifyApp.pdb
+C:\AGAPIA\CompilerAndTools-master\CompileAndBuildTools\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.csproj.CoreCompileInputs.cache
+C:\AGAPIA\CompilerAndTools-master\CompileAndBuildTools\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.exe
+C:\AGAPIA\CompilerAndTools-master\CompileAndBuildTools\SolutionModifyApp\SolutionModifyApp\obj\x86\Release\SolutionModifyApp.pdb
