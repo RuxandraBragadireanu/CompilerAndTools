@@ -1,0 +1,32 @@
+module MAIN{listen nil}{read nil}
+{
+	READ
+	$
+	COMPUTESUM
+}{speak nil}{write nil}
+
+module READ{listen nil}{read nil}
+{
+	@
+}{speak n:int}{write ((nr:int) numbers[];)}
+
+module COMPUTESUM{listen n:int}{read ((nr:int) numbers[];)}
+{
+	SUM0 # foreach_s(n-1) {SUMI} # SUMRESULT
+}{speak nil}{write nil}
+
+module SUM0{listen n:int}{read nr:int} 
+{ 
+	@
+} {speak resnew:int}{write nil}
+
+module SUMI{listen res:int}{read nr:int} 
+{ 
+	@
+} {speak resnew:int}{write nil}
+
+module SUMRESULT{listen res:int}{read nil} 
+{
+	@
+} {speak nil}{write nil}
+
