@@ -1,14 +1,14 @@
-module MAIN {listen nil}{read nil}
+module MAIN { listen nil } { read nil }
 {
-  READ # PRIMETEST
-}{speak nil}{write nil}
+	FILLBUFFER # CONSUMEBUFFER
+}{ speak nil } { write nil }
 
-module READ {listen nil}{read nil}
+module FILLBUFFER { listen nil } { read nil }
 {
 	@
-}{speak n:int}{write nil}
+}{speak buf : buffer } {write nil}
 
-module PRIMETEST{listen n:int}{read nil}
+module CONSUMEBUFFER { listen buf : buffer } { read nil}
 {
 	@
 }{speak nil}{write nil}

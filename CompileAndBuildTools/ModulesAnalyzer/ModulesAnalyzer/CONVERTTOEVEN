@@ -1,1 +1,0 @@
-	nrout = nr + rand()%2;

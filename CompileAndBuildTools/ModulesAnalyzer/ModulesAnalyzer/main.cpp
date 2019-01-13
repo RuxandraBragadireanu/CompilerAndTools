@@ -409,6 +409,25 @@ void AnalyzeCurrentModule(char *moduleName, ListOfCodeLines& listOfCodeLines, ch
 	}
 }
 
+bool looksLikeBufferAccessLine(const char* lineCode)
+{
+	const char* tokensToSearch[] = { "=", "<", "," ,">" };
+	const int numTokens = sizeof(tokensToSearch) / sizeof(tokensToSearch[0]);
+	// token1 = < token2, token3> ..
+
+	const char* currentSearchBuff = lineCode;
+	for (int i = 0; i < numTokens; i++)
+	{
+		const char* nextTokenPos = strstr(currentSearchBuff, tokensToSearch[i]);
+		if (nextTokenPos == nullptr)
+			return false;
+
+		currentSearchBuff = nextTokenPos;
+	}
+
+	return true;
+}
+
 int main()
 {
 	ParserProcessesVector parser;
@@ -444,7 +463,13 @@ int main()
 		fgets(lineBuff, 2048, fin);
 
 		if (feof(fin))
-			break;
+		{
+			// If its the last line of a module end, let it process...
+			if (state != E_OPENMODULE || !IsEndModuleBuffer(lineBuff))
+			{
+				break;
+			}
+		}
 
 		switch(state)
 		{
@@ -499,7 +524,45 @@ int main()
 					}
 					else if (!parser.ParseVectorAccessLine(lineBuff, lineNum))	// If it is not a vector access, add the entire line
 					{
-						listOfCodeLines.push_back(string(lineBuff));
+						// Special treatment for buffer data types. 
+						// TODO: unify the parsing process here with the one in the vector access
+
+						bool didReadABufferAccessLine = false;
+
+						if (looksLikeBufferAccessLine(lineBuff))
+						{
+							// What we expect from :  identifier = <identifier,identifier OR number>;
+							ParserProcessesVector::ParsedToken firstToken, secondToken;
+							int numCharsEaten = parser.ReadNextToken(lineBuff, firstToken, secondToken);
+
+							std::string buffVariableName = std::string(firstToken.data.stringData);
+
+							if (numCharsEaten > 0 && firstToken.type == ParserProcessesVector::TOKEN_IDENTIFIER)
+							{
+								char* nextLineBuff = lineBuff + numCharsEaten;
+								nextLineBuff = strstr(nextLineBuff, "=");
+								if (nextLineBuff)
+								{
+									nextLineBuff++;
+
+									numCharsEaten = parser.ReadNextToken(nextLineBuff, firstToken, secondToken);
+									if (numCharsEaten > 0 && firstToken.type == ParserProcessesVector::TOKEN_BUFFER_DATA_PAIR)
+									{
+										const std::string strLineCode = "\t" + buffVariableName + "->SetValue(" + std::string(firstToken.data.stringData) +
+											", " + std::string(secondToken.data.stringData) + ");\n";
+
+										listOfCodeLines.push_back(strLineCode);
+
+										didReadABufferAccessLine = true;
+									}
+								}
+							}
+						}
+
+						if (!didReadABufferAccessLine)
+						{
+							listOfCodeLines.push_back(string(lineBuff));
+						}
 					}
 					else	// Vector access, translate the code
 					{

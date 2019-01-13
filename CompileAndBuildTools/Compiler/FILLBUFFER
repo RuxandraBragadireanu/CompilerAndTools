@@ -1,0 +1,7 @@
+	const int iDataSize = 10 * sizeof(double);
+	double* numbers = new double[10];
+	for (int i = 0; i < 10; i++)
+		numbers[i] = (double)i;
+	unsigned char* pDataBegin = (char*) numbers;
+
+buf->SetValue(pDataBegin, iDataSize);

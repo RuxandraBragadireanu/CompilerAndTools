@@ -5,21 +5,20 @@
 #include "Includes.h"
 
 
-void READ(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock* pEast)
+void CONSUMEBUFFER(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock* pEast)
 {
 	// Local variables declaration: 
-	VectorProcessItem& numbers = *((VectorProcessItem*)pSouth->m_InputsInBlock[0]);
-	int& n = ((IntDataItem*)((SimpleProcessItem*)pEast->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
+	BufferDataItem* buf = ((BufferDataItem*)((SimpleProcessItem*)pWest->m_InputsInBlock[0])->m_InputItems[0])->GetValue();
 
 
 	// User code: 
-	    scanf("%d", &n);
-	    for (int i = 0; i < n; i++)
-		{
-			int nr;
-			scanf("%d", &nr);
-		SetInputItemToVector(15, &numbers, i, "nr", nr);
-		}
+		char *pData = (char*) buf->m_pData;
+		const int iDataSize = buf->m_iBufferSize;
+	
+		double* numbers = (double*) pData;
+		for (int i = 0; i < 10; i++)
+			printf("%d ", (int)numbers[i]);
+	
 	
 
 }
@@ -27,48 +26,20 @@ void READ(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock*
 
 
 
-void SUM0(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock* pEast)
+void FILLBUFFER(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock* pEast)
 {
 	// Local variables declaration: 
-	int& nr = ((IntDataItem*)((SimpleProcessItem*)pNorth->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
-	int& n = ((IntDataItem*)((SimpleProcessItem*)pWest->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
-	int& resnew = ((IntDataItem*)((SimpleProcessItem*)pEast->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
+	BufferDataItem* buf = ((BufferDataItem*)((SimpleProcessItem*)pEast->m_InputsInBlock[0])->m_InputItems[0])->GetValue();
 
 
 	// User code: 
-		resnew = nr; 
+		const int iDataSize = 10 * sizeof(double);
+		double* numbers = new double[10];
+		for (int i = 0; i < 10; i++)
+			numbers[i] = (double)i;
+		char* pDataBegin = (char*) numbers;
 	
-
-}
-
-
-
-
-void SUMI(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock* pEast)
-{
-	// Local variables declaration: 
-	int& nr = ((IntDataItem*)((SimpleProcessItem*)pNorth->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
-	int& res = ((IntDataItem*)((SimpleProcessItem*)pWest->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
-	int& resnew = ((IntDataItem*)((SimpleProcessItem*)pEast->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
-
-
-	// User code: 
-		resnew = res + nr;
-	
-
-}
-
-
-
-
-void SUMRESULT(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBlock* pEast)
-{
-	// Local variables declaration: 
-	int& res = ((IntDataItem*)((SimpleProcessItem*)pWest->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
-
-
-	// User code: 
-		printf("Sum result is %d\n", res);
+		buf->SetValue(pDataBegin, iDataSize);
 	
 
 }
@@ -76,8 +47,6 @@ void SUMRESULT(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputB
 
 void InitializeAgapiaToCFunctions()
 {
-ExecutionBlackbox::Get()->AddAgapiaToCFunction("READ", &READ);
-ExecutionBlackbox::Get()->AddAgapiaToCFunction("SUM0", &SUM0);
-ExecutionBlackbox::Get()->AddAgapiaToCFunction("SUMI", &SUMI);
-ExecutionBlackbox::Get()->AddAgapiaToCFunction("SUMRESULT", &SUMRESULT);
+ExecutionBlackbox::Get()->AddAgapiaToCFunction("CONSUMEBUFFER", &CONSUMEBUFFER);
+ExecutionBlackbox::Get()->AddAgapiaToCFunction("FILLBUFFER", &FILLBUFFER);
 }

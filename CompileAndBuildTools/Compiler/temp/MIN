@@ -1,4 +1,0 @@
-	if (n > m)
-		printf("Minimum is %d\n", m);
-	else
-		printf("Minimum is %d\n", n);

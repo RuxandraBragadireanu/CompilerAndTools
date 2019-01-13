@@ -1,0 +1,34 @@
+﻿  WHILENode.cpp
+  SymbolTable.cpp
+  Streams.cpp
+  ReferenceNode.cpp
+  Profiler.cpp
+  Parser_YaccWrapper.cpp
+  MainInputParser.cpp
+  main.cpp
+  INTERMEDIATENode.cpp
+  InputTypes.cpp
+  IFNode.cpp
+  FORNormal.cpp
+  FOREachNode.cpp
+  Expression.cpp
+  ExecutionStrategyConcrete_Serial.cpp
+  ExecutionStrategyConcrete_MPI.cpp
+  ExecutionStrategy.cpp
+  ExecutionBlackbox.cpp
+  DECLARATIONNode.cpp
+  CompilationBlackbox.cpp
+  Generating Code...
+  Compiling...
+  CommonUtils.cpp
+  CodeSerializationFactory.cpp
+  CModuleCode.cpp
+  calc3_utils.cpp
+  BaseNode.cpp
+  ASIGNMENTNode.cpp
+  AgapiaToCCode_ExecutorImpl.cpp
+  AgapiaToCCode.cpp
+  Generating Code...
+  Parser_LexWrapper.c
+  Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeDebug\Compiler.exe
+  Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeDebug\Compiler.pdb (Partial PDB)

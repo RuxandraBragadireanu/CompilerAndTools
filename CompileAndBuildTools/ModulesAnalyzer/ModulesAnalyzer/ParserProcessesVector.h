@@ -69,10 +69,12 @@ public:
 
 	std::string GetSpacesStringInFront();
 
-private:
-	
+
 	// Read the first token in codeLine to the outputToken. Returns the number of chars parsed in codeLine for the outputToken
 	int ReadNextToken(const char *codeLine, ParsedToken& outputToken, ParsedToken& secondToken);
+
+private:
+	
 
 	// Statical stuff about parsing
 	char mVectorName[512];
