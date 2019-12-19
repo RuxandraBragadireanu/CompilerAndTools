@@ -1,0 +1,11 @@
+% // Include files
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+% // Additional include directories
+% // Additional library directories
+% // Additional linker libs/dll etc
+% // Additional source files

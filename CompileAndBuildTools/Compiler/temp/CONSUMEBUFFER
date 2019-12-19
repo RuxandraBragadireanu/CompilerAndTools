@@ -1,7 +1,0 @@
-	char *pData = (char*) buf->m_pData;
-	const int iDataSize = buf->m_iBufferSize;
-
-	double* numbers = (double*) pData;
-	for (int i = 0; i < 10; i++)
-		printf("%d ", (int)numbers[i]);
-

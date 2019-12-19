@@ -34,7 +34,7 @@ public:
 typedef std::list<ForBufferItemType> ForBufferOfProcessInputs;
 typedef ForBufferOfProcessInputs::iterator ForBufferOfProcessInputsIter;
 
-class ProgramFOREACH : ProgramBase
+class ProgramFOREACH : public ProgramBase
 {
 public:
 	ProgramFOREACH(int lineNo) : ProgramBase(E_NODE_TYPE_FOREACH, lineNo), m_pValueToGo(NULL), m_bExpanded(false), 

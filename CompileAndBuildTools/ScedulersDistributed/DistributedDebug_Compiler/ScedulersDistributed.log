@@ -1,5 +1,5 @@
-﻿  stdafx.cpp
+﻿  SchedulerCODef_Master.cpp
   SchedulerCODef_Worker.cpp
-  SchedulerCODef_Master.cpp
+  stdafx.cpp
   Generating Code...
   ScedulersDistributed.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\DistributedDebug_Compiler\ScedulersDistributed.lib

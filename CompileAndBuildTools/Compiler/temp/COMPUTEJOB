@@ -1,0 +1,50 @@
+	
+	printf("COMPUTEJOB_%d module called.\n", rank);
+
+	int sqn = std::floor(sqrt(n)) + 1;
+	n = (n - sqn + 1);	
+	int t = (n / nrproc) + (rank <= n % nrproc);
+	
+	int start = sqn + (n / nrproc) * (rank - 1) + std::min(rank - 1, n % nrproc);
+	
+	char *pData = (char*) primesbuf->m_pData;
+	const int iDataSize = primesbuf->m_iBufferSize;
+		
+	int* primes = (int*) pData;
+	int nrElem = iDataSize / sizeof(int);
+	
+	std::vector<int> more_primes;
+	
+	if (rank == 1) {
+		
+		for (int i = 0; i < nrElem; ++i) {
+			more_primes.push_back(primes[i]);
+		}
+	}
+
+	for (int i = start, cnt = 0; cnt < t; ++i, ++cnt) {
+
+		bool is_prime = true;		
+		for (int x = 0; x < nrElem; ++x) {
+			
+			if (i % primes[x] == 0) {
+				
+				is_prime = false;
+				break;			
+			}
+		}
+
+		if (is_prime) {
+			
+			more_primes.push_back(i);		
+		}
+	}
+	
+	int* more_primes_arr = new int[more_primes.size()];
+	std::copy(more_primes.begin(), more_primes.end(), more_primes_arr);
+	
+	const int jDataSize = more_primes.size() * sizeof(int);
+	char* pDataBegin = (char*) more_primes_arr;
+	buf->SetValue(pDataBegin, jDataSize);
+
+

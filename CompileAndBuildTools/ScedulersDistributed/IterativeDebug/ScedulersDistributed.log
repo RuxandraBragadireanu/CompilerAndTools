@@ -1,1 +1,5 @@
-﻿  ScedulersDistributed.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeDebug\ScedulersDistributed.lib
+﻿  SchedulerCODef_Master.cpp
+  SchedulerCODef_Worker.cpp
+  stdafx.cpp
+  Generating Code...
+  ScedulersDistributed.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeDebug\ScedulersDistributed.lib

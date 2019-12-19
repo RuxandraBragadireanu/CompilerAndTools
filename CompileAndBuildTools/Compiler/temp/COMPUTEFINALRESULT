@@ -1,0 +1,34 @@
+	
+	printf("COMPUTEFINALRESULT module called.\n");
+	
+	int nrprocs = GetNumItemsInVectorProcessItem(results);
+	
+	std::vector<int> primes;
+	
+	for (int i = 0; i < nrprocs; ++i) {
+				
+	SimpleProcessItem* pResult = (SimpleProcessItem*)GetVectorItemByIndex(results, i, 0);
+		BufferDataItem* pDataItem = (BufferDataItem*) pResult->GetItem(0);
+		
+		char *pData = (char*) pDataItem->m_pData;
+		const int iDataSize = pDataItem->m_iBufferSize;
+		
+		int* aux = (int*) pData;
+		int nrElem = iDataSize / sizeof(int);
+		
+		for (int i = 0; i < nrElem; ++i) {
+			
+			primes.push_back(aux[i]);
+		}
+	}
+
+	
+	std::ofstream fout("result.out");
+
+	for (int x: primes) {
+		printf("%d, ", x);
+		fout << x << ", ";
+	}	
+
+	fout.close();
+

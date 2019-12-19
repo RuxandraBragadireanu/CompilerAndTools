@@ -1,0 +1,39 @@
+	
+	printf("COMPUTESIEVE module called.\n");
+	
+	ClearVectorOfProcessItems(&tasks);
+	int sqn = std::floor(sqrt(n)) + 1;
+
+	std::vector<bool> mark(n+1);
+	std::vector<int> lprimes;
+
+	lprimes.push_back(2);
+
+	for (int i = 3; i <= sqn; i += 2) {
+		
+		if (!mark[i]) {
+			
+			lprimes.push_back(i);
+			for (int j = i + i; j <= sqn; j += i) {
+				
+				mark[j] = true;			
+			}
+		}
+	}
+	
+	int* lprimes_arr = new int[lprimes.size()];
+	std::copy(lprimes.begin(), lprimes.end(), lprimes_arr);
+	
+	const int iDataSize = lprimes.size() * sizeof(int);
+	char* pDataBegin = (char*) lprimes_arr;
+	
+	nrprocs = nrofprocs;
+	for (int i = 0; i < nrofprocs; ++i) {
+		
+		
+	SetInputItemToVector(58, &tasks, i, "primes", (char*)pDataBegin, iDataSize);
+	SetInputItemToVector(59, &tasks, i, "nrproc", nrofprocs);
+	SetInputItemToVector(60, &tasks, i, "n", n);
+	SetInputItemToVector(61, &tasks, i, "rank", i);
+	}
+

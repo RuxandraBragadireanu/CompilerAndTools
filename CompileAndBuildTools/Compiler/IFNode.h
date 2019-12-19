@@ -6,7 +6,7 @@
 
 class BufferedInputBlock;
 
-class ProgramIF : ProgramBase
+class ProgramIF : public ProgramBase
 {
 public:
 	ProgramIF(int lineNo) 

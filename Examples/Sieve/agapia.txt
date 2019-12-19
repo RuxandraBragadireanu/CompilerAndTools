@@ -1,0 +1,179 @@
+
+module MAIN {listen nil}{read n: int; nrofprocs: int}
+{	
+	
+	READ # COMPUTESIEVE
+	%
+	COMPUTEALLJOBS
+	
+}{speak nil}{write nil}
+
+
+module READ{listen nil}{read n: int} @MASTER
+{
+	
+	printf("READ module called.\n");
+
+	nn = n;
+	
+}{speak nn: int}{write nil}
+
+
+module COMPUTESIEVE{listen n:int}{read nrofprocs:int} @MASTER
+{
+	
+	printf("COMPUTESIEVE module called.\n");
+	
+	ClearVectorOfProcessItems(&tasks);
+	int sqn = std::floor(sqrt(n)) + 1;
+
+	std::vector<bool> mark(n+1);
+	std::vector<int> lprimes;
+
+	lprimes.push_back(2);
+
+	for (int i = 3; i <= sqn; i += 2) {
+		
+		if (!mark[i]) {
+			
+			lprimes.push_back(i);
+			for (int j = i + i; j <= sqn; j += i) {
+				
+				mark[j] = true;			
+			}
+		}
+	}
+	
+	int* lprimes_arr = new int[lprimes.size()];
+	std::copy(lprimes.begin(), lprimes.end(), lprimes_arr);
+	
+	const int iDataSize = lprimes.size() * sizeof(int);
+	char* pDataBegin = (char*) lprimes_arr;
+	
+	nrprocs = nrofprocs;
+	for (int i = 0; i < nrofprocs; ++i) {
+		
+		//Daca decomentez assign-arile la tasks[i], nu se mai intra in modulul COMPUTEALLJOBS
+		
+		tasks@[i].primes = <pDataBegin, iDataSize>;
+		tasks@[i].nrproc = nrofprocs;
+		tasks@[i].n = n;
+		tasks@[i].rank = i + 1;
+	}
+
+}{speak nil}{write nrprocs: int ; ((primes: buffer, nrproc: int, n: int, rank: int) tasks[];) }
+
+
+module COMPUTEALLJOBS{listen nil}{read nrprocs: int ; ((primesbuf : buffer, nrproc: int, n: int, rank: int) tasks[];) }
+{
+	
+	printf("COMPUTEALLJOBS module called.\n");
+	
+	// I # foreach_s(nrprocs)
+	// {
+		// COMPUTEJOB
+	// }
+	// %
+	// COMPUTEFINALRESULT
+
+}{speak nil}{write nil}
+
+
+module COMPUTEJOB{listen nil}{read primesbuf : buffer, nrproc: int, n: int, rank: int}
+{
+	
+	printf("COMPUTEJOB_%d module called.\n", rank);
+
+	int sqn = std::floor(sqrt(n)) + 1;
+	n = (n - sqn + 1);	
+	int t = (n / nrproc) + (rank <= n % nrproc);
+	
+	int start = sqn + (n / nrproc) * (rank - 1) + std::min(rank - 1, n % nrproc);
+	
+	char *pData = (char*) primesbuf->m_pData;
+	const int iDataSize = primesbuf->m_iBufferSize;
+		
+	int* primes = (int*) pData;
+	int nrElem = iDataSize / sizeof(int);
+	
+	std::vector<int> more_primes;
+	
+	if (rank == 1) {
+		
+		for (int i = 0; i < nrElem; ++i) {
+			more_primes.push_back(primes[i]);
+		}
+	}
+
+	for (int i = start, cnt = 0; cnt < t; ++i, ++cnt) {
+
+		bool is_prime = true;		
+		for (int x = 0; x < nrElem; ++x) {
+			
+			if (i % primes[x] == 0) {
+				
+				is_prime = false;
+				break;			
+			}
+		}
+
+		if (is_prime) {
+			
+			more_primes.push_back(i);		
+		}
+	}
+	
+	int* more_primes_arr = new int[more_primes.size()];
+	std::copy(more_primes.begin(), more_primes.end(), more_primes_arr);
+	
+	const int jDataSize = more_primes.size() * sizeof(int);
+	char* pDataBegin = (char*) more_primes_arr;
+	buf = <pDataBegin, jDataSize>;
+
+
+}{speak nil}{write buf: buffer}
+
+
+module COMPUTEFINALRESULT{listen nil}{read ((buf: buffer) results[];)}
+{
+	
+	printf("COMPUTEFINALRESULT module called.\n");
+	
+	int nrprocs = GetNumItemsInVectorProcessItem(results);
+	
+	std::vector<int> primes;
+	
+	for (int i = 0; i < nrprocs; ++i) {
+				
+		SimpleProcessItem* pResult = results@[i];
+		BufferDataItem* pDataItem = (BufferDataItem*) pResult->GetItem(0);
+		
+		char *pData = (char*) pDataItem->m_pData;
+		const int iDataSize = pDataItem->m_iBufferSize;
+		
+		int* aux = (int*) pData;
+		int nrElem = iDataSize / sizeof(int);
+		
+		for (int i = 0; i < nrElem; ++i) {
+			
+			primes.push_back(aux[i]);
+		}
+	}
+
+	
+	std::ofstream fout("result.out");
+
+	for (int x: primes) {
+		printf("%d, ", x);
+		fout << x << ", ";
+	}	
+
+	fout.close();
+
+}{speak nil}{write nil}
+
+
+module I {listen nil}{read n:int}
+{
+
+}{speak nil}{write nil}

@@ -1,0 +1,38 @@
+module MAIN {listen nil}{read n: int; nrofprocs: int}
+{	
+	
+	READ # COMPUTESIEVE
+	%
+	COMPUTEALLJOBS
+	
+}{speak nil}{write nil}
+
+module READ{listen nil}{read n: int} 
+{
+	@MASTER
+}{speak nn: int}{write nil}
+
+module COMPUTESIEVE{listen n:int}{read nrofprocs:int} 
+{
+	@MASTER
+}{speak nil}{write nrprocs: int ; ((primes: buffer, nrproc: int, n: int, rank: int) tasks[];) }
+
+module COMPUTEALLJOBS{listen nil}{read nrprocs: int ; ((primesbuf : buffer, nrproc: int, n: int, rank: int) tasks[];) }
+{
+	@
+}{speak nil}{write nil}
+
+module COMPUTEJOB{listen nil}{read primesbuf : buffer, nrproc: int, n: int, rank: int}
+{
+	@
+}{speak nil}{write buf: buffer}
+
+module COMPUTEFINALRESULT{listen nil}{read ((buf: buffer) results[];)}
+{
+	@
+}{speak nil}{write nil}
+
+module I {listen nil}{read n:int}
+{
+	@
+}{speak nil}{write nil}

@@ -1521,7 +1521,7 @@ bool VectorProcessItem::SetValues(BaseProcessInput* pInput)
 		ArrayOfBaseProcessInputs& arrayOfProcesses_this = GetVectorItemByIndex(i); 	
 		// At this point they should be verified so both should vectors should have the same interface
 
-		for (ArrayOfBaseProcessInputsIter it_input = arrayOfProcesses_input.begin(), it_this = arrayOfProcesses_this.end();
+		for (ArrayOfBaseProcessInputsIter it_input = arrayOfProcesses_input.begin(), it_this = arrayOfProcesses_this.begin();
 				it_input != arrayOfProcesses_input.end(); it_input++, it_this++)
 		{
 			BaseProcessInput* pBPInput = *it_input;
