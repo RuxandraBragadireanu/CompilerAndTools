@@ -1,0 +1,26 @@
+module MAIN{listen nil}{read b:int}
+{
+	while_t (b > 0)
+	{
+	 TESTANDGODOWN
+	 %
+	 TESTANDGODOWN2 
+	}
+	%
+	IDENTITY
+}{speak nil}{write nil}
+
+module IDENTITY {listen nil} {read b:int}	@MASTER
+{
+	printf("Asta a fost\n");
+}{speak nil}{write nil}
+
+module TESTANDGODOWN {listen nil} {read b:int}	@MASTER
+{
+	printf("%d\n",b);
+	bout = b;
+}{speak nil}{write bout:int}
+module TESTANDGODOWN2 {listen nil} {read b:int}	@MASTER
+{
+	bout = 0;
+}{speak nil}{write bout:int}

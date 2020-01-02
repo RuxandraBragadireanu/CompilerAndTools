@@ -250,6 +250,7 @@ void ProgramWHILE::CreateAndLinkNewInternalChild()
 
 	// Clone the base
 	m_pIterationProgram = m_pBaseProgram->Clone();
+	m_pIterationProgram->SolveInputOutput();
 	m_pIterationProgram->m_pProgramParent = this;
 
 	if (IsTemporalIteration())

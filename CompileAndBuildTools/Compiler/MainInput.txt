@@ -1,2 +1,1 @@
-n			1000
-nrofprocs		5
+b	10

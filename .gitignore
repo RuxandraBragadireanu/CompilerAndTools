@@ -2,3 +2,12 @@
 *.iobj
 *.ipdb
 *.pdb
+*.tlog
+*.idb
+*.tlog
+*.tlog
+*.pdb
+*.ipdb
+*.obj
+CompileAndBuildTools/ScedulersDistributed/IterativeRelease/stdafx.obj
+*.obj

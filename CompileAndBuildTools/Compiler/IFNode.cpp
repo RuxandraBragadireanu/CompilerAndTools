@@ -262,8 +262,9 @@ void RebuildLinks(InputBlock* pInputs[4], InputBlock* pOutputs[4], int nrEntries
 			BaseProcessInput* pOldNext = pInputProcess->m_pNext;
 			if (pOldNext)
 			{
-				pOldNext->m_pFrom = NULL; pOldNext->m_pNext = NULL;
+				pOldNext->m_pFrom = NULL;
 			}
+			pInputProcess->m_pNext = NULL;
 
 			BaseProcessInput::SetOrientedLink(pInputProcess, pOutputProcess);
 		}

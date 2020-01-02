@@ -1,38 +1,27 @@
-module MAIN {listen nil}{read n: int; nrofprocs: int}
-{	
-	
-	READ # COMPUTESIEVE
+module MAIN{listen nil}{read b:int}
+{
+	while_t (b > 0)
+	{
+	 TESTANDGODOWN
+	 %
+	 TESTANDGODOWN2 
+	}
 	%
-	COMPUTEALLJOBS
-	
+	IDENTITY
 }{speak nil}{write nil}
 
-module READ{listen nil}{read n: int} 
+module IDENTITY {listen nil} {read b:int}	
 {
 	@MASTER
-}{speak nn: int}{write nil}
+}{speak nil}{write nil}
 
-module COMPUTESIEVE{listen n:int}{read nrofprocs:int} 
+module TESTANDGODOWN {listen nil} {read b:int}	
 {
 	@MASTER
-}{speak nil}{write nrprocs: int ; ((primes: buffer, nrproc: int, n: int, rank: int) tasks[];) }
+}{speak nil}{write bout:int}
 
-module COMPUTEALLJOBS{listen nil}{read nrprocs: int ; ((primesbuf : buffer, nrproc: int, n: int, rank: int) tasks[];) }
+module TESTANDGODOWN2 {listen nil} {read b:int}	
 {
-	@
-}{speak nil}{write nil}
+	@MASTER
+}{speak nil}{write bout:int}
 
-module COMPUTEJOB{listen nil}{read primesbuf : buffer, nrproc: int, n: int, rank: int}
-{
-	@
-}{speak nil}{write buf: buffer}
-
-module COMPUTEFINALRESULT{listen nil}{read ((buf: buffer) results[];)}
-{
-	@
-}{speak nil}{write nil}
-
-module I {listen nil}{read n:int}
-{
-	@
-}{speak nil}{write nil}
