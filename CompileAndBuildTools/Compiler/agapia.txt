@@ -3,7 +3,7 @@ module MAIN{listen nil}{read b:int}
 	while_t (b > 0)
 	{
 	 TESTANDGODOWN
-	 %
+	 $
 	 TESTANDGODOWN2 
 	}
 	%
@@ -19,8 +19,10 @@ module TESTANDGODOWN {listen nil} {read b:int}	@MASTER
 {
 	printf("%d\n",b);
 	bout = b;
-}{speak nil}{write bout:int}
-module TESTANDGODOWN2 {listen nil} {read b:int}	@MASTER
+	x = 3;
+}{speak x : int}{write bout:int}
+module TESTANDGODOWN2 {listen a : int} {read b:int}	@MASTER
 {
-	bout = 0;
+	bout = b-1;
+	printf("%d\n",a);
 }{speak nil}{write bout:int}

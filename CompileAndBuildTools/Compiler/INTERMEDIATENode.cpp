@@ -73,6 +73,8 @@ ProgramBase* ProgramIntermediateModule::Clone()
 	pCloned->m_szModuleName = (m_szModuleName ? _strdup(m_szModuleName) : NULL);
 	m_bIsAllInputReceived = false; //???
 
+	pCloned->ComputeNumInputsToReceive();
+
 	return pCloned;
 }
 
@@ -249,7 +251,7 @@ bool ProgramIntermediateModule::SolveInputOutput()
 	}
 }
 
-void ProgramIntermediateModule::ComputeNumInputsReceived()
+void ProgramIntermediateModule::ComputeNumInputsToReceive()
 {
 	// On atomic nodes, compute how many inputs need to be received
 	m_iNumberOfInputsRemainedToReceive = 0;
@@ -296,7 +298,7 @@ bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSp
 			return false;
 	}
 
-	ComputeNumInputsReceived();
+	ComputeNumInputsToReceive();
 	
 	return true;
 }

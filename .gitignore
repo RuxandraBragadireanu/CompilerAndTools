@@ -11,3 +11,14 @@
 *.obj
 CompileAndBuildTools/ScedulersDistributed/IterativeRelease/stdafx.obj
 *.obj
+*.ipch
+*.tlog
+*.tlog
+*.db
+*.db-shm
+*.db-wal
+CompileAndBuildTools/.vs/Compiler/v16/.suo
+*.idb
+*.log
+*.obj
+*.opendb

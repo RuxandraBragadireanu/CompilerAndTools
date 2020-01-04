@@ -1,2 +1,33 @@
-﻿  InputTypes.cpp
+﻿  ASIGNMENTNode.cpp
+  AgapiaToCCode.cpp
+  AgapiaToCCode_ExecutorImpl.cpp
+  BaseNode.cpp
+  CModuleCode.cpp
+  CodeSerializationFactory.cpp
+  CommonUtils.cpp
+  CompilationBlackbox.cpp
+  DECLARATIONNode.cpp
+  ExecutionBlackbox.cpp
+  ExecutionStrategy.cpp
+  ExecutionStrategyConcrete_MPI.cpp
+  ExecutionStrategyConcrete_Serial.cpp
+  Expression.cpp
+  FOREachNode.cpp
+  FORNormal.cpp
+  IFNode.cpp
+  INTERMEDIATENode.cpp
+  InputTypes.cpp
+  MainInputParser.cpp
+  Generating Code...
+  Compiling...
+  Parser_YaccWrapper.cpp
+  Profiler.cpp
+  ReferenceNode.cpp
+  Streams.cpp
+  SymbolTable.cpp
+  WHILENode.cpp
+  calc3_utils.cpp
+  main.cpp
+  Generating Code...
+  Parser_LexWrapper.c
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeDebug\Compiler.exe

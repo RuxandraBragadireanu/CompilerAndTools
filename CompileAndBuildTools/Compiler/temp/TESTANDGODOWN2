@@ -1,1 +1,2 @@
-	bout = 0;
+	bout = b-1;
+	printf("%d\n",a);

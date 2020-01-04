@@ -25,7 +25,7 @@ public:
 	virtual bool SolveInputOutput();
 	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn);
 
-	virtual void ComputeNumInputsReceived();
+	virtual void ComputeNumInputsToReceive();
 
 	// This should be called to create input linkage and all kinds of stuff depending by node
 	virtual bool OnInputReceived(BaseProcessInput* pOriginalInput, BaseProcessInput* pInputNodeReceiver, EInputDirection eDir);

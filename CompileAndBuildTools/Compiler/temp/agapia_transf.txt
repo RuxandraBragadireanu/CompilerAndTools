@@ -3,7 +3,7 @@ module MAIN{listen nil}{read b:int}
 	while_t (b > 0)
 	{
 	 TESTANDGODOWN
-	 %
+	 $
 	 TESTANDGODOWN2 
 	}
 	%
@@ -18,9 +18,9 @@ module IDENTITY {listen nil} {read b:int}
 module TESTANDGODOWN {listen nil} {read b:int}	
 {
 	@MASTER
-}{speak nil}{write bout:int}
+}{speak x : int}{write bout:int}
 
-module TESTANDGODOWN2 {listen nil} {read b:int}	
+module TESTANDGODOWN2 {listen a : int} {read b:int}	
 {
 	@MASTER
 }{speak nil}{write bout:int}

@@ -25,11 +25,13 @@ void TESTANDGODOWN(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, In
 	// Local variables declaration: 
 	int& b = ((IntDataItem*)((SimpleProcessItem*)pNorth->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
 	int& bout = ((IntDataItem*)((SimpleProcessItem*)pSouth->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
+	int& x = ((IntDataItem*)((SimpleProcessItem*)pEast->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
 
 
 	// User code: 
 		printf("%d\n",b);
 		bout = b;
+		x = 3;
 	
 
 }
@@ -41,11 +43,13 @@ void TESTANDGODOWN2(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, I
 {
 	// Local variables declaration: 
 	int& b = ((IntDataItem*)((SimpleProcessItem*)pNorth->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
+	int& a = ((IntDataItem*)((SimpleProcessItem*)pWest->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
 	int& bout = ((IntDataItem*)((SimpleProcessItem*)pSouth->m_InputsInBlock[0])->m_InputItems[0])->GetValueRef();
 
 
 	// User code: 
-		bout = 0;
+		bout = b-1;
+		printf("%d\n",a);
 	
 
 }

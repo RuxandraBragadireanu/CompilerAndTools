@@ -131,24 +131,36 @@ bool ProgramWHILE::SolveInputOutput()
 	if (IsSpatialIteration())
 	{
 		// The east and west interface should be the same
-		if (!m_pInputWest->VerifyInputMatching(m_pOutputEast, true)) 
+		if (!m_pInputWest->VerifyInputMatching(m_pOutputEast, true))
+		{
+			PrintCompileError(mDebugLineNo, "The WHILE node has bad interfaces of its program inside: east and west should match for a spatial iteration");
 			return false;
+		}
 	}
 	else if (IsTemporalIteration())
 	{
 		// The north and south interface should be the same
-		if (!m_pOutputSouth->VerifyInputMatching(m_pInputNorth, true)) 
+		if (!m_pOutputSouth->VerifyInputMatching(m_pInputNorth, true))
+		{
+			PrintCompileError(mDebugLineNo, "The WHILE node has bad interfaces of its program inside: north and south should match for a temporal iteration");
 			return false;
+		}
 	}
 	else if (IsDiagonalIteration())
 	{
 		// The north and south interface should be the same 
 		// AND (east - west)
 		if (!m_pInputWest->VerifyInputMatching(m_pOutputEast, true)) 
+		{
+			PrintCompileError(mDebugLineNo, "The WHILE node has bad interfaces of its program inside: east and west should match for a diagonal iteration");
 			return false;
+		}
 
-		if (!m_pOutputSouth->VerifyInputMatching(m_pInputNorth, true)) 
+		if (!m_pOutputSouth->VerifyInputMatching(m_pInputNorth, true))
+		{
+			PrintCompileError(mDebugLineNo, "The WHILE node has bad interfaces of its program inside: north and south should match for a diagonal iteration");
 			return false;
+		}
 	}
 	else
 	{
