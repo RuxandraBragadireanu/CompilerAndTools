@@ -1,28 +1,230 @@
-module MAIN{listen nil}{read b:int}
+module MAIN{listen nil}{read nrofprocs : int,filenamein : string,filenameout:string,b : int}
 {
-	while_t (b > 0)
-	{
-	 TESTANDGODOWN
-	 $
-	 TESTANDGODOWN2 
-	}
+	READANDGENERATE 
 	%
-	IDENTITY
+	while_t(b > 0)
+	{
+		AUXI
+		%
+		(foreach_s(nrofprocs)
+		{
+			GENERATESLAVE
+		}
+		%
+		GETRESULTNUMBERS) # CONTINUE # NEXTSTEP 
+	}
+	$ SORTANDPRINT
+	//}
+	
 }{speak nil}{write nil}
+module TEST{listen nil}{read b : int}
+{
+	std::cout << b << std::endl;
+	bout = 0;
 
-module IDENTITY {listen nil} {read b:int}	@MASTER
-{
-	printf("Asta a fost\n");
-}{speak nil}{write nil}
-
-module TESTANDGODOWN {listen nil} {read b:int}	@MASTER
-{
-	printf("%d\n",b);
-	bout = b;
-	x = 3;
-}{speak x : int}{write bout:int}
-module TESTANDGODOWN2 {listen a : int} {read b:int}	@MASTER
-{
-	bout = b-1;
-	printf("%d\n",a);
 }{speak nil}{write bout:int}
+module TEST2{listen nil}{read b : int}
+{
+	std::cout << b << std::endl;
+
+}{speak nil}{write nil}
+module AUXI{listen nil}{read b:int;((nr:int,proc:int) numbers[];);wordsnumber:int,b2:int;indseed:int,nrofprocs2:int,buf1:buffer,buf2:buffer}
+{
+	int nrValues = GetNumItemsInVectorProcessItem(numbers);
+	//std::cout << b << std::endl;
+	for (int i=0;i<nrValues;++i)
+	{
+		SimpleProcessItem* pSPI = numbers@[i];
+		IntDataItem* pIntData = (IntDataItem*)pSPI->GetItem(0);
+		IntDataItem* pIntData2 = (IntDataItem*)pSPI->GetItem(1);
+		int aux1 = pIntData->GetValue();
+		int aux2 = pIntData2->GetValue();
+		numbersout@[i].nr = aux1;
+		numbersout@[i].proc = aux2;
+	}
+	wordsnumberout = wordsnumber;
+	bout = b2;
+	indseedout = indseed;
+	nrofprocsout = nrofprocs2;
+	char *pData = (char*) buf1->m_pData;
+	const int iDataSize = buf1->m_iBufferSize;
+	buf3 = <pData,iDataSize>
+	char *pData2 = (char*) buf2->m_pData;
+	const int iDataSize2 = buf2->m_iBufferSize;
+	buf4 = <pData2,iDataSize2>  
+	std::cout << wordsnumberout << " " << bout << " " << indseedout << " " << nrofprocsout << std::endl;
+}{speak nil}{write ((nr:int,proc:int) numbersout[];);wordsnumberout:int,bout:int;indseedout:int,nrofprocsout:int,buf3:buffer,buf4:buffer}
+
+
+
+module SORTANDPRINT{listen buf : buffer}{read b2:int;((nr:int,proc:int) numbers[];);wordsnumber:int,b : int;indseed : int,nrofprocs2 : int,buf2 : buffer,buf3:buffer}
+{
+	char *pData = (char*) buf->m_pData;
+	const int iDataSize = buf->m_iBufferSize;
+	int* generatednumbers = (int*)pData;
+	std::vector<int> numbers2;
+	for (int i=0;i<(iDataSize/sizeof(int));++i)
+		numbers2.push_back(generatednumbers[i]);
+	char *pData2 = (char*) buf2->m_pData;
+	const int iDataSize2 = buf2->m_iBufferSize;
+	inputWord* w = (inputWord*) pData2;
+	std::vector<inputWord> input;
+	for (int i=0;i<iDataSize2/sizeof(inputWord);++i)
+		input.push_back(w[i]);
+	for (int i=0;i<input.size();++i)
+		input[i].generatedNumber = numbers2[i];
+	std::sort(input.begin(),input.end(),comp);
+	char *filenameout = (char*)buf3->m_pData;
+	std::ofstream f("key.txt");
+	std::ofstream fout(filenameout);
+	for (int i = 0; i < input.size() - 1; ++i)
+	{
+			fout << input[i].word << " ";
+			f << encrypt(input[i].index) << " ";
+	}
+	fout << input[input.size() - 1].word;
+	f << encrypt(input[input.size() - 1].index);
+}{speak nil}{write nil}
+module CONTINUE{listen buff : buffer}{read wordsnumber : int,b : int}
+{
+	const int iDataSize = buff->m_iBufferSize;
+	std::cout << wordsnumber << std::endl;
+	printf("Continue\n");
+	if (iDataSize > wordsnumber)
+		b = 0;
+	bol = b;
+	bol2 = b;
+	std::cout << bol << " " << bol2 << std::endl;
+	wordsnum = wordsnumber;
+	char *pData2 = (char*) buff->m_pData;
+	std::cout << pData2 << std::endl;
+	const int iDataSize2 = wordsnumber * sizeof(int);
+	buf = <pData2,iDataSize2>
+}{speak bol : int,buf : buffer,wordsnum : int, bol2 : int}{write nil}
+
+module NEXTSTEP {listen bol : int,buf : buffer,wordsnum : int,bol2 : int}{read indexseed : int,nrofprocs : int,buf1:buffer,buf2:buffer}
+{
+	printf("NextStep\n");
+	if (bol == 1)
+	{
+		char *pData = (char*) buf->m_pData;
+		const int iDataSize = buf->m_iBufferSize;
+		int* generatednumbers = (int*)pData;
+		for (int i=0;i < nrofprocs;++i)
+		{
+			int n = generatednumbers[indexseed+i];
+			numbers@[i].nr = n;
+			numbers@[i].proc = nrofprocs;
+		}
+		indexseed += 1;
+	}
+	char *pData2 = (char*) buf->m_pData;
+	const int iDataSize2 = buf->m_iBufferSize;
+	buff = <pData2,iDataSize2>
+	wordsnumber = wordsnum;
+	indseed = indexseed;
+	b = bol2;
+	nrofprocs2 = nrofprocs;
+	b2 = bol2;
+	char *pData = (char*) buf1->m_pData;
+	const int iDataSize = buf1->m_iBufferSize;
+	buf3 = <pData,iDataSize>
+	char *pData3 = (char*) buf2->m_pData;
+	const int iDataSize3 = buf2->m_iBufferSize;
+	buf4 = <pData3,iDataSize3>
+}{speak buff : buffer}{write b2:int;((nr:int,proc:int) numbers[];);wordsnumber:int,b : int;indseed : int,nrofprocs2 : int,buf3:buffer,buf4:buffer}
+
+module GETRESULTNUMBERS{listen nil}{read ((buf:buffer) numbers[];)}
+{
+	int nrValues = GetNumItemsInVectorProcessItem(numbers);
+	printf("%d\n",nrValues);
+	std::vector<int> generatednumbers;
+	printf("Gather\n");
+	for (int i = 0; i < nrValues; i++)
+	{
+		SimpleProcessItem* pSPI = numbers@[i];
+		BufferDataItem* pIntData = (BufferDataItem*)pSPI->GetItem(0);
+		char *pData = pIntData->m_pData;
+		const int iDataSize = pIntData->m_iBufferSize;
+		int* num = (int*) pData;
+		for (int i=0;i<(iDataSize/sizeof(int));++i)
+			generatednumbers.push_back(num[i]);
+	}
+	const int size = generatednumbers.size();
+	const int iDataSize = size * sizeof(int);
+	//std::cout << size << std::endl;
+	int* numb = new int[size];
+	for (int i=0;i<size;++i)
+		numb[i] = generatednumbers[i];
+	char* pDataBegin = (char*) numb;
+	buf = <pDataBegin, iDataSize>;
+	
+}{speak buf : buffer}{write nil}
+
+module GENERATESLAVE{listen nil}{read nr : int,proc : int}
+{
+	std::vector<int> generatednumbers;
+	int seed = nr;
+	for (int i = 0; i < proc; ++i)
+	{
+		int generatednumber = recurence(seed);
+		seed = generatednumber;
+		generatednumbers.push_back(generatednumber);
+	}
+        printf("Slave\n");
+	const int size = generatednumbers.size();
+	const int iDataSize = size * sizeof(int);
+	int* numb = new int[size];
+	for (int i=0;i<size;++i)
+		numb[i] = generatednumbers[i];
+	char* pDataBegin = (char*) numb;
+	buf = <pDataBegin, iDataSize>;
+}{speak nil}{write buf : buffer}
+
+module READANDGENERATE{listen nil}{read nrofprocs : int,filenamein : string,filenameout:string,b : int} @MASTER
+{
+	std::ifstream fin(*filenamein);
+	std::string word;
+	int index = 0;
+	std::vector<inputWord> input;
+	while (fin >> word)
+	{
+		inputWord aux;
+		strcpy(aux.word,word.c_str());
+		aux.index = index;
+		input.push_back(aux);
+		index++;
+	}
+	const int wordsnum = input.size();
+	std::vector<int> generatednumbers;
+	srand(time(NULL));
+	int seed = std::rand() % (int)pow(2,31);
+	for (int i = 0; i < nrofprocs; ++i)
+	{
+		int generatednumber = recurence(seed);
+		seed = generatednumber;
+		generatednumbers.push_back(generatednumber);
+	}
+
+	for (int i=0;i<generatednumbers.size();++i)
+	{
+		int n = generatednumbers[i];
+		numbers@[i].nr = n;
+		numbers@[i].proc = nrofprocs;
+	}
+	b2 = b;
+	wordsnumber = wordsnum;
+	bol = b;
+	indexseed = nrofprocs;
+	nrofprocs2 = nrofprocs;
+	const int iDataSize3 = wordsnum * sizeof(inputWord);
+	inputWord* w = new inputWord[wordsnum];
+	for (int i = 0; i < input.size(); i++)
+		w[i] = input[i];
+	char* pDataBegin3 = (char*)w;
+	buf3 = <pDataBegin3, iDataSize3>;
+	const int iDataSize4 = strlen(*filenameout) * sizeof(char);
+	char* pDataBegin4 = (*filenameout);
+	buf4 = <pDataBegin4, iDataSize4>;
+}{speak nil}{write b2:int;((nr:int,proc:int) numbers[];); wordsnumber : int,bol : int;indexseed : int,nrofprocs2 : int,buf3:buffer,buf4:buffer}
+

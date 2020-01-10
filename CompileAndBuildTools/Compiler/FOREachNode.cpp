@@ -7,7 +7,6 @@
 ProgramBase* ProgramFOREACH::Clone()
 {
 	ProgramFOREACH* pClonedFOR = new ProgramFOREACH(mDebugLineNo);
-	pClonedFOR->m_pValueToGo = m_pValueToGo->Clone();
 
 	// If the base program is a reference, find the ref at it recursively and solve it before cloning !
 	// We can't clone a reference module 
@@ -21,6 +20,31 @@ ProgramBase* ProgramFOREACH::Clone()
 
 	pClonedFOR->m_eType = m_eType;
 	pClonedFOR->m_iNumIterationChilds = 0;
+
+	// Inherit the symbol table and clone the value to go expression
+	pClonedFOR->DoBaseSymbolTableInheritance(this->m_SymbolTable);
+	pClonedFOR->m_pValueToGo = m_pValueToGo->Clone();
+	pClonedFOR->m_pValueToGo->ValidateExpression(pClonedFOR->m_SymbolTable);
+
+	
+	// This will help input output solver to understand that it needs to expand children too after cloning process !
+	pClonedFOR->m_bShouldExpand = this->m_bExpanded; 
+	// Solving the the input output blocks will be done from exterior not from clone: CHECK the the WHILE NODE for example how it calls SolveInputOutput for children hierarchly 
+	// DO NOT CALL THE FOLLOWING LINE FROM CLONE IT IS TOTALLY INTERDICTED ACCORDING TO DESIGN! CLONE AND SOLVING ARE TWO SEPARATE - ITERATIVE STEPS !
+	//pClonedFOR->SolveInputOutput();
+	
+	// Check if the number of expanded children is the same
+	//assert(pClonedFOR->m_iNumIterationChilds == this->m_iNumIterationChilds && "The number of iterated children count is different");
+
+	// Check if the buffering items is the same. WARNING: THIS IS EXPECTED BECAUSE WE DON'T clone them
+	// We only want to be sure that the target clone doesn't have anything buffered!
+	{
+		for (int i = 0; i < E_NUM_DIRECTION; i++)
+		{
+			assert(pClonedFOR->m_BufferedInputs[i].size() == this->m_BufferedInputs[i].size() && "problem with buffering. see comment above in code");
+		}
+		assert(pClonedFOR->m_FullArrayBuffered == this->m_FullArrayBuffered && "problem with buffering. see comment above in code");
+	}	
 
 	return pClonedFOR;
 }
@@ -221,6 +245,14 @@ bool ProgramFOREACH::SolveInputOutput()
 		assert(false);
 		PrintCompileError(mDebugLineNo, "Unknown FOR type");
 		return false;
+	}
+
+
+	// If it should expand, expand the base children too
+	if (m_bShouldExpand)
+	{
+		Expand();
+		m_bShouldExpand = false;
 	}
 	
 	return true;
@@ -553,10 +585,15 @@ void ProgramFOREACH::OnInputItemReady(char *szName)
 	// If the module hasn't been previously expanded and we don't expect any new input variables for condition, expand the module
 	if (!m_bExpanded && m_SetOfRequiredVariables.empty())
 	{
-		assert(m_bExpanded == false);
-		ChildsCreationLinkage();
-		SendBufferedInput();
+		Expand();
 	}
+}
+
+void ProgramFOREACH::Expand()
+{
+	assert(m_bExpanded == false);
+	ChildsCreationLinkage();
+	SendBufferedInput();
 }
 
 void ProgramFOREACH::AddBufferedProcessInput(EInputDirection eDir, BaseProcessInput* pOriginalInput, int iParentVectorIndex, int iIndexInItem)

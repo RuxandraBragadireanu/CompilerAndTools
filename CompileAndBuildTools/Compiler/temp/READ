@@ -1,5 +1,0 @@
-	
-	printf("READ module called.\n");
-
-	nn = n;
-	

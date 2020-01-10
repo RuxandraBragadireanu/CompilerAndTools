@@ -37,7 +37,7 @@ typedef ForBufferOfProcessInputs::iterator ForBufferOfProcessInputsIter;
 class ProgramFOREACH : public ProgramBase
 {
 public:
-	ProgramFOREACH(int lineNo) : ProgramBase(E_NODE_TYPE_FOREACH, lineNo), m_pValueToGo(NULL), m_bExpanded(false), 
+	ProgramFOREACH(int lineNo) : ProgramBase(E_NODE_TYPE_FOREACH, lineNo), m_pValueToGo(NULL), m_bExpanded(false), m_bShouldExpand(false),
 					m_pBaseChildProgram(NULL), m_pIterationChilds(NULL), m_eType(E_FOREACH_UNDEFINED), m_iNumIterationChilds(NULL), m_FullArrayBuffered(NULL), m_iNrFinishedInternalPrograms(0)
 	{}
 
@@ -69,6 +69,9 @@ public:
 	// True if the for child have been expanded
 	bool m_bExpanded;
 
+	// True if this module comes from something that was cloned after and parent was expanded
+	bool m_bShouldExpand;
+
 	// Base child program 
 	ProgramBase*	m_pBaseChildProgram;
 
@@ -87,6 +90,8 @@ public:
 	EForEachType	m_eType;
 
 private:
+	void Expand();
+
 	// Adds a process input in the local buffer
 	// eDir - the direction where this input comes from
 	// pOriginalInput - a pointer with the actual input received

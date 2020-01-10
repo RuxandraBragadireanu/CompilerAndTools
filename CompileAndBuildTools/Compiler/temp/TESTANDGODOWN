@@ -1,3 +1,0 @@
-	printf("%d\n",b);
-	bout = b;
-	x = 3;

@@ -1,36 +1,10 @@
-﻿  ASIGNMENTNode.cpp
-  AgapiaToCCode.cpp
-  AgapiaToCCode_ExecutorImpl.cpp
-  BaseNode.cpp
-  CModuleCode.cpp
-  CodeSerializationFactory.cpp
-  CommonUtils.cpp
-  CompilationBlackbox.cpp
-  DECLARATIONNode.cpp
-  ExecutionBlackbox.cpp
-  ExecutionStrategy.cpp
-  ExecutionStrategyConcrete_MPI.cpp
-  ExecutionStrategyConcrete_Serial.cpp
-  Expression.cpp
+﻿  CodeSerializationFactory.cpp
   FOREachNode.cpp
-  FORNormal.cpp
-  IFNode.cpp
-  INTERMEDIATENode.cpp
   InputTypes.cpp
-  MainInputParser.cpp
-  Compiling...
-  Parser_YaccWrapper.cpp
-  Profiler.cpp
-  ReferenceNode.cpp
-  Streams.cpp
-  SymbolTable.cpp
-  WHILENode.cpp
   calc3_utils.cpp
-  main.cpp
-  Parser_LexWrapper.c
   Generating code
-  0 of 2513 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  8 of 2689 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeRelease\Compiler.exe

@@ -1,5 +1,14 @@
 % // Include files
 #include <stdio.h>
+#include <iostream>
+#include <cmath>
+#include <ctime>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include "mpi.h"
+#include "dec.cpp"
 % // Additional include directories
 % // Additional library directories
 % // Additional linker libs/dll etc

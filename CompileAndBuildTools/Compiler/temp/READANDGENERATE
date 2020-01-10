@@ -1,0 +1,43 @@
+	std::ifstream fin(*filenamein);
+	std::string word;
+	int index = 0;
+	std::vector<inputWord> input;
+	while (fin >> word)
+	{
+		inputWord aux;
+		strcpy(aux.word,word.c_str());
+		aux.index = index;
+		input.push_back(aux);
+		index++;
+	}
+	const int wordsnum = input.size();
+	std::vector<int> generatednumbers;
+	srand(time(NULL));
+	int seed = std::rand() % (int)pow(2,31);
+	for (int i = 0; i < nrofprocs; ++i)
+	{
+		int generatednumber = recurence(seed);
+		seed = generatednumber;
+		generatednumbers.push_back(generatednumber);
+	}
+
+	for (int i=0;i<generatednumbers.size();++i)
+	{
+		int n = generatednumbers[i];
+	SetInputItemToVector(212, &numbers, i, "nr", n);
+	SetInputItemToVector(213, &numbers, i, "proc", nrofprocs);
+	}
+	b2 = b;
+	wordsnumber = wordsnum;
+	bol = b;
+	indexseed = nrofprocs;
+	nrofprocs2 = nrofprocs;
+	const int iDataSize3 = wordsnum * sizeof(inputWord);
+	inputWord* w = new inputWord[wordsnum];
+	for (int i = 0; i < input.size(); i++)
+		w[i] = input[i];
+	char* pDataBegin3 = (char*)w;
+	buf3->SetValue(pDataBegin3, iDataSize3);
+	const int iDataSize4 = strlen(*filenameout) * sizeof(char);
+	char* pDataBegin4 = (*filenameout);
+	buf4->SetValue(pDataBegin4, iDataSize4);
