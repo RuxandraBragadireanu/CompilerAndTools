@@ -196,7 +196,7 @@ SymbolArrivedResult ProgramWHILE::OnSymbolArrived(char *szName)
 	return result;
 }
 
-bool ProgramWHILE::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn)
+bool ProgramWHILE::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule)
 {
 	ProgramBase::DoBaseSymbolTableInheritance(pParent);
 
@@ -232,7 +232,7 @@ bool ProgramWHILE::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn)
 
 	// Validate the child program
 	bool bShouldInherit = ProgramBase::GetShouldGiveParentTableTo(m_pBaseProgram);
-	if (!m_pBaseProgram->Validate(bShouldInherit ? pParent : NULL, bAtRuntimeSpawn))
+	if (!m_pBaseProgram->Validate(bShouldInherit ? pParent : NULL, bAtRuntimeSpawn, true))
 		return false;
 
 	m_iNrInputsNeededInNorth = m_pBaseProgram->m_pInputNorth->m_InputsInBlock.size();

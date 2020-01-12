@@ -11,7 +11,7 @@ public:
 	void SetChilds(IExpression *pChild0, IExpression *pChild1) { m_ChildExpressions[0] = pChild0; m_ChildExpressions[1] = pChild1;}
 	virtual void DoAsignment(SymbolTable& pSymbolTable);
 
-	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn);
+	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule);
 
 	virtual ProgramBase* Clone();
 	virtual bool SolveReferences() { return true; }

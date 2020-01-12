@@ -60,7 +60,8 @@ public:
 	// MUST BE CALLED BEFORE INHERITS THE BASE SYMBOL TABLE !! (global values are prioritar to the child ones)
 	virtual bool DoSymbolTableInheritInputBlocks(InputBlock* pNorthBlock, InputBlock* pWestBlock, bool useLastVar=false);
 	
-	virtual bool Validate(SymbolTable *pParent, bool bAtRuntimeSpawn) = 0;
+	// bTemplateModule : true if this module is a template not an actual instance (e.g. program inside for or while)
+	virtual bool Validate(SymbolTable *pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule) = 0;
 
 	ProgramBase(ENodeType eType, int lineNo)
 		: IProgram(eType), m_iNumberOfInputsRemainedToReceive(0), m_bHasNoInput(false)
@@ -107,6 +108,8 @@ public:
 	int GetLineNo() const { return mDebugLineNo; }
 
 	virtual bool IsAtomicProgram() { return false; }
+
+	virtual bool ValidateAtomicProgramsIO(bool bTemplateMOdule) { return true; }
 
 	// This will be called when a child program of this will finish the execution.
 	// A pointer to the child will he sent as a parameter

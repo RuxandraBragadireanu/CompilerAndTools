@@ -1,10 +1,38 @@
-﻿  AgapiaToCCode.cpp
+﻿  ASIGNMENTNode.cpp
+  AgapiaToCCode.cpp
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(142): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(250): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(259): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(272): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(305): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(311): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(313): warning C4018: '<': signed/unsigned mismatch
+  AgapiaToCCode_ExecutorImpl.cpp
+  BaseNode.cpp
+  CModuleCode.cpp
+  CodeSerializationFactory.cpp
+  CompilationBlackbox.cpp
+  DECLARATIONNode.cpp
+  ExecutionStrategyConcrete_MPI.cpp
+  ExecutionStrategyConcrete_Serial.cpp
+  Expression.cpp
+  FOREachNode.cpp
+  FORNormal.cpp
+  IFNode.cpp
   INTERMEDIATENode.cpp
+  InputTypes.cpp
+  MainInputParser.cpp
+  Parser_YaccWrapper.cpp
+  ReferenceNode.cpp
+  SymbolTable.cpp
+  Compiling...
   WHILENode.cpp
 C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\WHILENode.cpp(403): warning C4018: '<': signed/unsigned mismatch
+  calc3_utils.cpp
+  main.cpp
   Generating code
-  224 of 2794 functions ( 8.0%) were compiled, the rest were copied from previous compilation.
-    3 functions were new in current compilation
-    291 functions had inline decision re-evaluated but remain unchanged
+  470 of 2968 functions (15.8%) were compiled, the rest were copied from previous compilation.
+    172 functions were new in current compilation
+    293 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\DistributedRelease_Compiler\Compiler.exe

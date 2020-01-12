@@ -1,0 +1,2 @@
+	std::cout << b << std::endl;
+

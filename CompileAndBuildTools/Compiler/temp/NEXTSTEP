@@ -1,0 +1,28 @@
+	printf("NextStep\n");
+	if (bol == 1)
+	{
+		char *pData = (char*) buf->m_pData;
+		const int iDataSize = buf->m_iBufferSize;
+		int* generatednumbers = (int*)pData;
+		for (int i=0;i < nrofprocs;++i)
+		{
+			int n = generatednumbers[indexseed+i];
+		SetInputItemToVector(117, &numbers, i, "nr", n);
+		SetInputItemToVector(118, &numbers, i, "proc", nrofprocs);
+		}
+		indexseed += 1;
+	}
+	char *pData2 = (char*) buf->m_pData;
+	const int iDataSize2 = buf->m_iBufferSize;
+	buff->SetValue(pData2, iDataSize2);
+	wordsnumber = wordsnum;
+	indseed = indexseed;
+	b = bol2;
+	nrofprocs2 = nrofprocs;
+	b2 = bol2;
+	char *pData = (char*) buf1->m_pData;
+	const int iDataSize = buf1->m_iBufferSize;
+	buf3->SetValue(pData, iDataSize);
+	char *pData3 = (char*) buf2->m_pData;
+	const int iDataSize3 = buf2->m_iBufferSize;
+	buf4->SetValue(pData3, iDataSize3);

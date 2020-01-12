@@ -14,7 +14,7 @@ public:
 	virtual bool SolveReferences() { return false; }
 	virtual bool SolveInputOutput() { return true; }
 
-	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn) { return false; }
+	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule) override { return false; }
 	virtual void OnChildProgramFinished(ProgramBase* pChildFinished) {}
 
 	// This is not null only if this node refers to a module name!
@@ -31,7 +31,7 @@ public:
 	virtual bool SolveReferences() { return true; }
 	virtual bool SolveInputOutput() { return true; }
 
-	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn) { return true; }
+	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule) override { return true; }
 	virtual void OnChildProgramFinished(ProgramBase* pChildFinished) {}
 };
 
@@ -45,7 +45,7 @@ public:
 	virtual bool SolveReferences() { return false; }
 	virtual bool SolveInputOutput() { return true; }
 
-	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn) { return true; }
+	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule) override { return true; }
 	virtual void OnChildProgramFinished(ProgramBase* pChildFinished) {}
 
 	// This is not null only if this node refers to a module name!

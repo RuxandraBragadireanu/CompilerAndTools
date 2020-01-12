@@ -44,7 +44,7 @@ public:
 	virtual ProgramBase* Clone();
 	virtual bool SolveReferences();
 	virtual bool SolveInputOutput();
-	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn);
+	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule) override;
 
 	// Called when this for receive a value
 	void ChildsCreationLinkage();

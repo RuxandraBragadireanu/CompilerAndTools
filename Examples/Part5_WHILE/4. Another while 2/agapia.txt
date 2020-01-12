@@ -77,7 +77,8 @@ module SORTANDPRINT{listen buf : buffer}{read b2:int;((nr:int,proc:int) numbers[
 	char *filenameout = (char*)buf3->m_pData;
 	std::ofstream f("key.txt");
 	std::ofstream fout(filenameout);
-	for (int i = 0; i < input.size() - 1; ++i)
+        int sz = input.size() - 1;
+	for (int i = 0; i < sz; ++i)
 	{
 			fout << input[i].word << " ";
 			f << encrypt(input[i].index) << " ";

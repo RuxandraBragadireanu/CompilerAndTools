@@ -263,7 +263,7 @@ void ProgramIntermediateModule::ComputeNumInputsToReceive()
 	}
 }
 
-bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn)
+bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule)
 {
 	if (!bAtRuntimeSpawn)
 		ProgramBase::DoBaseSymbolTableInheritance(pParent);
@@ -294,14 +294,22 @@ bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSp
 	for (int i = 0; i < m_iNrChilds; i++)
 	{
 		bool bShouldInherit = ProgramBase::GetShouldGiveParentTableTo(m_pChilds[i]);
-		if (!m_pChilds[i]->Validate(bShouldInherit ? m_SymbolTable : NULL, bAtRuntimeSpawn))
+		if (!m_pChilds[i]->Validate(bShouldInherit ? m_SymbolTable : NULL, bAtRuntimeSpawn, false))
 			return false;
 	}
 
 	ComputeNumInputsToReceive();
 
+	ValidateAtomicProgramsIO(bTemplateMOdule);
+	
+	return true;
+}
+
+bool ProgramIntermediateModule::ValidateAtomicProgramsIO(bool bTemplateMOdule)
+{
 	// Check now if every atomic module input has a FROM reference connected to its inputs Otherwise it can't be executed right ?
-	if (m_bIsAtomic)
+// This shouldn't be done on template modules !
+	if (!bTemplateMOdule && m_bIsAtomic)
 	{
 		InputBlock* pInputBlocks[2] = { m_pInputNorth, m_pInputWest };
 		for (int i = 0; i < 2; i++)
@@ -323,7 +331,7 @@ bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSp
 						{
 							if (asVector->m_ArrayOfItemInputs.size() > 0)
 							{
-								
+
 								for (BaseProcessInput* it : asVector->m_ArrayOfItemInputs)
 								{
 
@@ -336,13 +344,14 @@ bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSp
 					if (error)
 					{
 						PrintCompileError(mDebugLineNo, "Atomic module %s has not all connections solved in the %s side ! Check your input/output", m_szModuleName, i == 0 ? "North" : "West");
+						exit(-1);
 						return false;
 					}
 				}
 			}
 		}
 	}
-	
+
 	return true;
 }
 

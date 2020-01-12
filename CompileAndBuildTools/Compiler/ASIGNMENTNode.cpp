@@ -3,7 +3,7 @@
 
 #include "calc3_utils.h"
 
-bool ProgramAsignment::Validate(SymbolTable* pSymbolTable, bool bAtRuntimeSpawn)
+bool ProgramAsignment::Validate(SymbolTable* pSymbolTable, bool bAtRuntimeSpawn, bool bTemplateMOdule)
 {
 	if (m_ChildExpressions[0]->m_eGeneralType == E_EXPR_VARIABLE)
 	{

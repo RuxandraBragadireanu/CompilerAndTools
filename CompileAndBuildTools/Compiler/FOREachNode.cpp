@@ -49,7 +49,7 @@ ProgramBase* ProgramFOREACH::Clone()
 	return pClonedFOR;
 }
 
-bool ProgramFOREACH::Validate(SymbolTable *pParent, bool bAtRuntimeSpawn)
+bool ProgramFOREACH::Validate(SymbolTable *pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule)
 {
 	ProgramBase::DoBaseSymbolTableInheritance(pParent);
 
@@ -106,7 +106,7 @@ bool ProgramFOREACH::Validate(SymbolTable *pParent, bool bAtRuntimeSpawn)
 	}
 	*/
 	
-	if (!m_pBaseChildProgram->Validate(pParent, bAtRuntimeSpawn))
+	if (!m_pBaseChildProgram->Validate(pParent, bAtRuntimeSpawn, true))
 		return false;
 
 	return true;
@@ -279,7 +279,7 @@ void ProgramFOREACH::ChildsCreationLinkage()
 		m_pIterationChilds[i] = m_pBaseChildProgram->Clone();
 
 		// Validate it - to inherit the symbol table and compute number of inputs to be received
-		m_pIterationChilds[i]->Validate(m_SymbolTable, true);
+		m_pIterationChilds[i]->Validate(m_SymbolTable, true, true);
 
 		m_pIterationChilds[i]->m_pProgramParent = this;
 	}
@@ -462,6 +462,13 @@ void ProgramFOREACH::ChildsCreationLinkage()
 	default:
 		assert(false && "Not defined well the type of FOR! ");
 		return;
+	}
+
+	// Validate atomic programs inside
+	for (unsigned int i = 0; i < m_iNumIterationChilds; i++)
+	{
+		// Validate it - to inherit the symbol table and compute number of inputs to be received
+		m_pIterationChilds[i]->ValidateAtomicProgramsIO(false);
 	}
 }
 

@@ -1,5 +1,35 @@
-﻿  AgapiaToCCode.cpp
+﻿  ASIGNMENTNode.cpp
+  AgapiaToCCode.cpp
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(142): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(250): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(259): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(272): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(305): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(311): warning C4018: '<': signed/unsigned mismatch
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(313): warning C4018: '<': signed/unsigned mismatch
+  AgapiaToCCode_ExecutorImpl.cpp
+  BaseNode.cpp
+  CModuleCode.cpp
+  CodeSerializationFactory.cpp
+  CompilationBlackbox.cpp
+  DECLARATIONNode.cpp
+  ExecutionStrategyConcrete_MPI.cpp
+  ExecutionStrategyConcrete_Serial.cpp
+  Expression.cpp
+  FOREachNode.cpp
+  FORNormal.cpp
+  IFNode.cpp
+  INTERMEDIATENode.cpp
+  InputTypes.cpp
+  MainInputParser.cpp
+  Parser_YaccWrapper.cpp
+  ReferenceNode.cpp
+  SymbolTable.cpp
+  Generating Code...
+  Compiling...
   WHILENode.cpp
 C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\WHILENode.cpp(403): warning C4018: '<': signed/unsigned mismatch
+  calc3_utils.cpp
+  main.cpp
   Generating Code...
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\DistributedDebug_Compiler\Compiler.exe

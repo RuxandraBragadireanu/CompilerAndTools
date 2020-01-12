@@ -23,7 +23,9 @@ public:
 
 	virtual bool SolveReferences();
 	virtual bool SolveInputOutput();
-	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn);
+	virtual bool Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule) override;
+
+	virtual bool ValidateAtomicProgramsIO(bool bTemplateMOdule) override; 
 
 	virtual void ComputeNumInputsToReceive();
 

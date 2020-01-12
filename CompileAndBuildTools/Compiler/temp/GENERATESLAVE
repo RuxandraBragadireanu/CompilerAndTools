@@ -1,0 +1,16 @@
+	std::vector<int> generatednumbers;
+	int seed = nr;
+	for (int i = 0; i < proc; ++i)
+	{
+		int generatednumber = recurence(seed);
+		seed = generatednumber;
+		generatednumbers.push_back(generatednumber);
+	}
+        printf("Slave\n");
+	const int size = generatednumbers.size();
+	const int iDataSize = size * sizeof(int);
+	int* numb = new int[size];
+	for (int i=0;i<size;++i)
+		numb[i] = generatednumbers[i];
+	char* pDataBegin = (char*) numb;
+	buf->SetValue(pDataBegin, iDataSize);

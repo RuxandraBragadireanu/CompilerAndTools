@@ -107,7 +107,7 @@ void ProgramIF::CreateInputBuffers()
 		m_BufferInputBlocks[i] = new BufferedInputBlock(inputBlocks[i]->size());
 }
 
-bool ProgramIF::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn)
+bool ProgramIF::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bIsTemplateMOdule)
 {
 	ProgramBase::DoBaseSymbolTableInheritance(pParent);
 
@@ -178,7 +178,7 @@ bool ProgramIF::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn)
 	{
 		if (pChilds[i] == NULL) continue;
 		bool bShouldInherit = ProgramBase::GetShouldGiveParentTableTo(pChilds[i]);
-		if (!pChilds[i]->Validate(bShouldInherit ? pParent : NULL, bAtRuntimeSpawn))
+		if (!pChilds[i]->Validate(bShouldInherit ? pParent : NULL, bAtRuntimeSpawn, true))
 			return false;
 	}
 
@@ -304,6 +304,12 @@ void ProgramIF::OnAllSymbolsArrived()
 	m_pProgramToChoose->m_pProgramParent = this;
 
 	m_bConditionEvaluated = true;
+
+	// Validate atomic modules inside
+	if (m_pProgramToChoose != nullptr)
+	{
+		m_pProgramToChoose->ValidateAtomicProgramsIO(false);
+	}
 
 	// Move the input buffered to the chosen program
 	if (m_pProgramToChoose)

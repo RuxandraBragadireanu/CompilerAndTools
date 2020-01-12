@@ -189,8 +189,8 @@ void NEXTSTEP(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, InputBl
 			for (int i=0;i < nrofprocs;++i)
 			{
 				int n = generatednumbers[indexseed+i];
-			SetInputItemToVector(116, &numbers, i, "nr", n);
-			SetInputItemToVector(117, &numbers, i, "proc", nrofprocs);
+			SetInputItemToVector(117, &numbers, i, "nr", n);
+			SetInputItemToVector(118, &numbers, i, "proc", nrofprocs);
 			}
 			indexseed += 1;
 		}
@@ -259,8 +259,8 @@ void READANDGENERATE(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, 
 		for (int i=0;i<generatednumbers.size();++i)
 		{
 			int n = generatednumbers[i];
-		SetInputItemToVector(212, &numbers, i, "nr", n);
-		SetInputItemToVector(213, &numbers, i, "proc", nrofprocs);
+		SetInputItemToVector(213, &numbers, i, "nr", n);
+		SetInputItemToVector(214, &numbers, i, "proc", nrofprocs);
 		}
 		b2 = b;
 		wordsnumber = wordsnum;
@@ -316,7 +316,8 @@ void SORTANDPRINT(InputBlock* pNorth, InputBlock* pWest, InputBlock* pSouth, Inp
 		char *filenameout = (char*)buf3->m_pData;
 		std::ofstream f("key.txt");
 		std::ofstream fout(filenameout);
-		for (int i = 0; i < input.size() - 1; ++i)
+	        int sz = input.size() - 1;
+		for (int i = 0; i < sz; ++i)
 		{
 				fout << input[i].word << " ";
 				f << encrypt(input[i].index) << " ";

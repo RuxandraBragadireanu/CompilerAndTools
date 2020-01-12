@@ -95,7 +95,7 @@ bool CompilationBlackbox::DoCompileSteps(int executionTypes)
 
 	//printf("========== BEGIN STEP 3: Validate statements ===========\n");
 	ClearIteration();
-	if (!pMainModule->Validate(NULL, false))
+	if (!pMainModule->Validate(NULL, false, false))
 		return false;
 
 	//printf("========== BEGIN STEP 4: Write the translated AGAPIA atomic modules to C code ===========\n");

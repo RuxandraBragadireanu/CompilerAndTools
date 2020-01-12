@@ -38,7 +38,7 @@ void ProgramDeclaration::SetIdentifierAndInputItem(char *szIdentifier, IDataType
 	m_pInputItem = pInputItem;
 }
 
-bool ProgramDeclaration::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn)
+bool ProgramDeclaration::Validate(SymbolTable* pParent, bool bAtRuntimeSpawn, bool bTemplateMOdule)
 {
 	if (!pParent->AddSymbol(m_szIdentifier, m_pInputItem))
 		return false;
