@@ -372,8 +372,6 @@ void ProgramWHILE::VerifyFirstIterationSpawn()
 
 		// Check the condition and spawn the first child
 		CheckIfShouldSpawnNewChild();
-
-		m_iIterationIdx++;
 	}
 }
 
@@ -385,26 +383,73 @@ void ProgramWHILE::OnChildProgramFinished(ProgramBase* pChildFinished)
 
 void ProgramWHILE::SendBufferedInputs(bool bIsWhileEnding)
 {
-	InputBlock* pInputBlocks[2] = { m_pInputNorth, m_pInputWest };
-	int sizes[2] = { (int)m_pInputNorth->m_InputsInBlock.size(), (int)m_pInputWest->m_InputsInBlock.size() };
-
-	for (int i = 0; i < 2; i ++)
+	// Send the accumulated output on the iterated side 
+	if (bIsWhileEnding)
 	{
-		int sz = pInputBlocks[i]->m_InputsInBlock.size();
-		if (sz == 0) continue;
-
-		for (int j = 0 ; j < sz - 1; j++)
+		// In temporal iteration, send the array of processes accumulated in the east side
+		InputBlock* pOutputBlockToSend = nullptr;
+		if (IsTemporalIteration())
 		{
-			BaseProcessInput* pBPI = pInputBlocks[i]->m_InputsInBlock[j];			
-			pBPI->m_pNext->GoDownValue(pBPI);
+			pOutputBlockToSend = m_pOutputEast;
+		}
+		else if (IsSpatialIteration()) // In spatial, send the array accumulated in the south side
+		{
+			pOutputBlockToSend = m_pOutputSouth;
 		}
 
-		// Send the last input in this direction and mark the WHILE program as sending the last input
-		m_bIsLastInputSent = true;
-		BaseProcessInput* pBPI = pInputBlocks[i]->m_InputsInBlock[sz-1];
-		pBPI->m_pNext->GoDownValue(pBPI);
-		m_bIsLastInputSent = false;
+
+		if (pOutputBlockToSend)
+		{
+			for (int j = 0; j < pOutputBlockToSend->m_InputsInBlock.size(); j++)
+			{
+				BaseProcessInput* pBPI = pOutputBlockToSend->m_InputsInBlock[j];
+				if (pBPI->m_pNext)
+				{
+					pBPI->m_pNext->GoDownValue(pBPI);
+				}
+			}
+		}
 	}
+
+	// Send the accumulated output in the input blocks
+	{
+		InputBlock* pInputBlocks[2] = { m_pInputNorth, m_pInputWest };
+		bool sendMask[2] = { false, false };
+		if (IsDiagonalIteration())
+		{
+			sendMask[0] = sendMask[1] = true;
+		}
+		else if (IsTemporalIteration())
+		{
+			sendMask[0] = true; // North and south are connected
+		}
+		else if (IsSpatialIteration())
+		{
+			sendMask[1] = true; // West and east are connected
+		}
+
+		int sizes[2] = { (int)m_pInputNorth->m_InputsInBlock.size(), (int)m_pInputWest->m_InputsInBlock.size() };
+
+		for (int i = 0; i < 2; i++)
+		{
+			int sz = pInputBlocks[i]->m_InputsInBlock.size();
+			if (sz == 0 || sendMask[i] == false) 
+				continue;
+
+			for (int j = 0; j < sz - 1; j++)
+			{
+				BaseProcessInput* pBPI = pInputBlocks[i]->m_InputsInBlock[j];
+				pBPI->m_pNext->GoDownValue(pBPI);
+			}
+
+			// Send the last input in this direction and mark the WHILE program as sending the last input
+			m_bIsLastInputSent = true;
+			BaseProcessInput* pBPI = pInputBlocks[i]->m_InputsInBlock[sz - 1];
+			pBPI->m_pNext->GoDownValue(pBPI);
+			m_bIsLastInputSent = false;
+		}
+	}
+	
 }
 
 void ProgramWHILE::CheckIfShouldSpawnNewChild()
@@ -421,17 +466,27 @@ void ProgramWHILE::CheckIfShouldSpawnNewChild()
 	if (bCondValue)
 	{
 		CreateAndLinkNewInternalChild();
-		SendBufferedInputs();
+		SendBufferedInputs(m_bIsWhileModuleFinishing);
 	}
 	else
 	{
-		// Link from north to south, west to east, then send the buffered input
-		BaseProcessInput::SetOrientedLink(m_pInputNorth->m_InputsInBlock, m_pOutputSouth->m_InputsInBlock);
-		BaseProcessInput::SetOrientedLink(m_pInputWest->m_InputsInBlock, m_pOutputEast->m_InputsInBlock);
+		if (IsTemporalIteration()) 		// Link from north to south, west to east, then send the buffered input
+		{
+			BaseProcessInput::SetOrientedLink(m_pInputNorth->m_InputsInBlock, m_pOutputSouth->m_InputsInBlock);
+		}
+		else if (IsSpatialIteration())  // Link from west to east, west to east, then send the buffered input
+		{
+			BaseProcessInput::SetOrientedLink(m_pInputWest->m_InputsInBlock, m_pOutputEast->m_InputsInBlock);
+		}
+		else 
+		{
+			BaseProcessInput::SetOrientedLink(m_pInputNorth->m_InputsInBlock, m_pOutputSouth->m_InputsInBlock);
+			BaseProcessInput::SetOrientedLink(m_pInputWest->m_InputsInBlock, m_pOutputEast->m_InputsInBlock);
+		}
 
 		// Mark the module as finished and send the latest buffered input
 		m_bIsWhileModuleFinishing = true;
-		SendBufferedInputs();
+		SendBufferedInputs(m_bIsWhileModuleFinishing);
 
 		SendProgramFinished(this);
 	}

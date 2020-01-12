@@ -8,4 +8,8 @@
     <LocalDebuggerCommandArguments>g</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DistributedDebug_Compiler|Win32'">
+    <LocalDebuggerCommandArguments>f</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

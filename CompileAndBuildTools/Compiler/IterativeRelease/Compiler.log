@@ -1,10 +1,8 @@
-﻿  CodeSerializationFactory.cpp
-  FOREachNode.cpp
-  InputTypes.cpp
-  calc3_utils.cpp
+﻿  WHILENode.cpp
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\WHILENode.cpp(403): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  8 of 2689 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
+  3 of 2517 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
     2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeRelease\Compiler.exe

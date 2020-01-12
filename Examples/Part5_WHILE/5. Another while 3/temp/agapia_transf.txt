@@ -1,0 +1,27 @@
+module MAIN{listen nil}{read b:int}
+{
+	while_t (b > 0)
+	{
+	 TESTANDGODOWN
+	 %
+	 TESTANDGODOWN2 
+	}
+	$
+	SHOWRESULTS
+}{speak nil}{write nil}
+
+module SHOWRESULTS {listen ((a : int) results [];) } {read b:int}	
+{
+	@MASTER
+}{speak nil}{write nil}
+
+module TESTANDGODOWN {listen nil} {read b:int}	
+{
+	@MASTER
+}{speak nil}{write bout:int}
+
+module TESTANDGODOWN2 {listen nil} {read b:int}	
+{
+	@MASTER
+}{speak x:int}{write bout:int}
+

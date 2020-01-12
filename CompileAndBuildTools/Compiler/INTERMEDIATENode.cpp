@@ -299,6 +299,49 @@ bool ProgramIntermediateModule::Validate(SymbolTable* pParent, bool bAtRuntimeSp
 	}
 
 	ComputeNumInputsToReceive();
+
+	// Check now if every atomic module input has a FROM reference connected to its inputs Otherwise it can't be executed right ?
+	if (m_bIsAtomic)
+	{
+		InputBlock* pInputBlocks[2] = { m_pInputNorth, m_pInputWest };
+		for (int i = 0; i < 2; i++)
+		{
+			ArrayOfBaseProcessInputs& inputsInBlock = pInputBlocks[i]->m_InputsInBlock;
+			for (size_t j = 0; j < inputsInBlock.size(); j++)
+			{
+				if (inputsInBlock[j]->m_pFrom == nullptr)
+				{
+					bool error = true;
+
+					// If a simple input process then it is error, if not there might be a chance that it is an array and we need to check all components individually
+					// NOT VALID the case above yet: i think atomic modules should have full array vector of processes in/out
+					/*
+					if (inputsInBlock[j]->m_eType == E_INPUT_ARRAY)
+					{
+						VectorProcessItem* asVector = static_cast<VectorProcessItem*>(inputsInBlock[j]);
+						if (asVector)
+						{
+							if (asVector->m_ArrayOfItemInputs.size() > 0)
+							{
+								
+								for (BaseProcessInput* it : asVector->m_ArrayOfItemInputs)
+								{
+
+								}
+							}
+						}
+					}
+					*/
+
+					if (error)
+					{
+						PrintCompileError(mDebugLineNo, "Atomic module %s has not all connections solved in the %s side ! Check your input/output", m_szModuleName, i == 0 ? "North" : "West");
+						return false;
+					}
+				}
+			}
+		}
+	}
 	
 	return true;
 }

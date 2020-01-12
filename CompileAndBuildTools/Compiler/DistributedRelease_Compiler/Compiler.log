@@ -1,19 +1,10 @@
 ﻿  AgapiaToCCode.cpp
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(142): warning C4018: '<': signed/unsigned mismatch
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(250): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(259): warning C4018: '<': signed/unsigned mismatch
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(272): warning C4018: '<': signed/unsigned mismatch
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(305): warning C4018: '<': signed/unsigned mismatch
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(311): warning C4018: '<': signed/unsigned mismatch
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(313): warning C4018: '<': signed/unsigned mismatch
-C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\AgapiaToCCode.cpp(319): warning C4018: '<': signed/unsigned mismatch
-  CodeSerializationFactory.cpp
-  FOREachNode.cpp
-  InputTypes.cpp
-  calc3_utils.cpp
+  INTERMEDIATENode.cpp
+  WHILENode.cpp
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\WHILENode.cpp(403): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  401 of 2966 functions (13.5%) were compiled, the rest were copied from previous compilation.
-    162 functions were new in current compilation
-    294 functions had inline decision re-evaluated but remain unchanged
+  224 of 2794 functions ( 8.0%) were compiled, the rest were copied from previous compilation.
+    3 functions were new in current compilation
+    291 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\DistributedRelease_Compiler\Compiler.exe

@@ -1,6 +1,3 @@
-﻿  CodeSerializationFactory.cpp
-  FOREachNode.cpp
-  InputTypes.cpp
-  calc3_utils.cpp
-  Generating Code...
+﻿  WHILENode.cpp
+C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\Compiler\WHILENode.cpp(403): warning C4018: '<': signed/unsigned mismatch
   Compiler.vcxproj -> C:\AGAPIA\CompilerAndTools\CompileAndBuildTools\IterativeDebug\Compiler.exe

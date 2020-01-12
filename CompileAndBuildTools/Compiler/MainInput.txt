@@ -1,9 +1,1 @@
-nrofprocs	5
-filenamein	input_text.txt
-filenameout	encrypted_text.txt
-b	1
-
-
-
-
-
+b	10

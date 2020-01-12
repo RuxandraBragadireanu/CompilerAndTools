@@ -1,64 +1,27 @@
-module MAIN{listen nil}{read nrofprocs : int,filenamein : string,filenameout:string,b : int}
+module MAIN{listen nil}{read b:int}
 {
-	READANDGENERATE 
-	%
-	while_t(b > 0)
+	while_t (b > 0)
 	{
-		AUXI
-		%
-		(foreach_s(nrofprocs)
-		{
-			GENERATESLAVE
-		}
-		%
-		GETRESULTNUMBERS) # CONTINUE # NEXTSTEP 
+	 TESTANDGODOWN
+	 %
+	 TESTANDGODOWN2 
 	}
-	$ SORTANDPRINT
-	
+	$
+	SHOWRESULTS
 }{speak nil}{write nil}
 
-module TEST{listen nil}{read b : int}
-{
-	@
-}{speak nil}{write bout:int}
-
-module TEST2{listen nil}{read b : int}
-{
-	@
-}{speak nil}{write nil}
-
-module AUXI{listen nil}{read b:int;((nr:int,proc:int) numbers[];);wordsnumber:int,b2:int;indseed:int,nrofprocs2:int,buf1:buffer,buf2:buffer}
-{
-	@
-}{speak nil}{write ((nr:int,proc:int) numbersout[];);wordsnumberout:int,bout:int;indseedout:int,nrofprocsout:int,buf3:buffer,buf4:buffer}
-
-module SORTANDPRINT{listen buf : buffer}{read b2:int;((nr:int,proc:int) numbers[];);wordsnumber:int,b : int;indseed : int,nrofprocs2 : int,buf2 : buffer,buf3:buffer}
-{
-	@
-}{speak nil}{write nil}
-
-module CONTINUE{listen buff : buffer}{read wordsnumber : int,b : int}
-{
-	@
-}{speak bol : int,buf : buffer,wordsnum : int, bol2 : int}{write nil}
-
-module NEXTSTEP {listen bol : int,buf : buffer,wordsnum : int,bol2 : int}{read indexseed : int,nrofprocs : int,buf1:buffer,buf2:buffer}
-{
-	@
-}{speak buff : buffer}{write b2:int;((nr:int,proc:int) numbers[];);wordsnumber:int,b : int;indseed : int,nrofprocs2 : int,buf3:buffer,buf4:buffer}
-
-module GETRESULTNUMBERS{listen nil}{read ((buf:buffer) numbers[];)}
-{
-	@
-}{speak buf : buffer}{write nil}
-
-module GENERATESLAVE{listen nil}{read nr : int,proc : int}
-{
-	@
-}{speak nil}{write buf : buffer}
-
-module READANDGENERATE{listen nil}{read nrofprocs : int,filenamein : string,filenameout:string,b : int} 
+module SHOWRESULTS {listen ((a : int) results [];) } {read b:int}	
 {
 	@MASTER
-}{speak nil}{write b2:int;((nr:int,proc:int) numbers[];); wordsnumber : int,bol : int;indexseed : int,nrofprocs2 : int,buf3:buffer,buf4:buffer}
+}{speak nil}{write nil}
+
+module TESTANDGODOWN {listen nil} {read b:int}	
+{
+	@MASTER
+}{speak nil}{write bout:int}
+
+module TESTANDGODOWN2 {listen nil} {read b:int}	
+{
+	@MASTER
+}{speak x:int}{write bout:int}
 
