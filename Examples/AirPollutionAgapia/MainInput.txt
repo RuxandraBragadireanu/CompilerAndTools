@@ -1,0 +1,2 @@
+filename		CO.csv
+nrofprocs		2
