@@ -1,0 +1,157 @@
+module MAIN { listen nil } { read filename : string ; nrofprocs : int }
+{
+	(READ # DISPATCHJOBS)  $ 
+	        COMPUTEALLJOBS	           
+}{ speak nil } { write nil }
+
+module READ { listen nil } { read  filename: string } @MASTER
+{
+	printf("Reading from sensor %s...\n", *filename);
+
+	vector<MeasurementInfo> *measurements = new vector<MeasurementInfo>();
+	double duration;
+	clock_t start = clock(); 
+
+	csv::Read(*filename, measurements);	
+
+	duration = ( clock() - start );
+	printf("The sensor data was received in: %.2f\n", duration);
+
+	measurementsaddress = (int)( (void *) measurements);
+	measurementssize = measurements->size();
+
+}{ speak measurementssize : int, measurementsaddress : int } { write nil }
+
+module DISPATCHJOBS { listen measurementssize : int, measurementsaddress : int } { read nrofprocs : int } @MASTER
+{	
+	ClearVectorOfProcessItems(&tasks);
+
+	int measuremntsPerProc = measurementssize / nrofprocs;
+	int indexesToAddOne = measurementssize % nrofprocs;
+	int start = 0;
+	for (int i = 0; i < nrofprocs; i++)
+	{
+		int measurementsForThisProc = measuremntsPerProc + (indexesToAddOne > i ? 1 : 0);
+
+		tasks@[i].address = measurementsaddress;
+		tasks@[i].startindex = start;
+		tasks@[i].count	=	measurementsForThisProc;
+
+		start += measurementsForThisProc;
+	}
+	
+	nrprocs = nrofprocs;
+
+}{ speak nrprocs : int} { write (( address : int, startindex : int, count : int ) tasks [];) }
+
+module COMPUTEALLJOBS { listen nrprocs : int} { read (( address : int, startindex : int, count : int ) tasks [];) }
+{
+	foreach_s (nrprocs)
+	{
+		SUM		
+	}
+	% 
+	AQI
+	%
+	foreach_s (nrprocs)
+	{
+		VARIANCE
+	}
+	%
+	STDDEV
+
+}{ speak nil } { write nil }
+
+module SUM { listen nil} { read address : int, startindex : int, count : int }
+{	
+	vector<MeasurementInfo> *measurementscopy = (vector<MeasurementInfo> *)((void *) address);
+	vector<float> *normalmeasurements = new vector<float>();
+
+	sum = 0;
+	size = 0;
+	for (int i = startindex; i < startindex + count; i++) {
+        if (static_cast<Status>(measurementscopy->at(i).StatusCode) == Status::Normal) {
+			sum += measurementscopy->at(i).MeasurementValue;
+            size++;   
+			normalmeasurements->push_back(measurementscopy->at(i).MeasurementValue);
+        }
+    }		
+
+	addr = (int)( (void *) normalmeasurements);
+}{ speak nil } { write sum : float, size : int, addr : int }
+
+module AQI { listen nrprocs : int } { read ((sum : float, size : int, addr : int) sums [];) }
+{
+	float totalsum = 0;
+	int totalsize = 0;
+	for(int i = 0; i < nrprocs; i++){
+		SimpleProcessItem* pSPI = sums@[i];
+		totalsum += ((FloatDataItem*)pSPI->GetItem(0))->GetValue();
+		totalsize += ((IntDataItem*)pSPI->GetItem(1))->GetValue();	
+	}
+
+	double mean = totalsum / totalsize;
+    aqi::Element element = aqi::Element::CO;
+    pair<double, aqi::Category> qualityIndex = aqi::ComputeAirQualityIndex(mean, element);
+    if (qualityIndex.first == NULL) {
+        printf("Eroare! AQI nu a putut fi calculat.");
+    }
+    else{
+        bool isGoodAqi = aqi::CheckAirQualityIndex(qualityIndex.first, element, qualityIndex.second);
+
+        if (isGoodAqi) {
+            printf("AQI %s: %f is %s\n", aqi::ToString(element).c_str(), qualityIndex.first, aqi::ToString(qualityIndex.second).c_str());
+        }
+        else {
+            printf("AQI %s: %f is NOT %s\n", aqi::ToString(element).c_str(), qualityIndex.first, aqi::ToString(qualityIndex.second).c_str());
+        }        
+    }    
+
+	ClearVectorOfProcessItems(&tasks);
+
+	for (int i = 0; i < nrprocs; i++)
+	{
+		SimpleProcessItem* pSPI = sums@[i];
+		int size = ((IntDataItem*)pSPI->GetItem(1))->GetValue();
+		int address = ((IntDataItem*)pSPI->GetItem(2))->GetValue();
+		float m = (float)mean;
+		tasks@[i].count = size;	
+		tasks@[i].mean = m;
+		tasks@[i].address = address;	
+	}
+    
+
+}{ speak nil } { write ((count: int, mean: float, address: int) tasks[];) }
+
+module VARIANCE { listen nil} { read  count: int, mean: float, address: int}
+{	
+	vector<float> *normalmeasurementscopy = (vector<float> *)((void *) address);
+
+	double var = 0.0;
+	size = count;
+	for (int i = 0; i < size; i++) {
+		var += pow(normalmeasurementscopy->at(i) - mean, 2);       
+    }		
+
+	variance = (float)var;
+
+}{ speak nil } { write variance : float, size : int }
+
+module STDDEV { listen nil } { read ((variance : float, size : int) variances [];) }
+{
+	float totalvariance = 0;
+	int totalsize = 0;
+
+	int n = GetNumItemsInVectorProcessItem(variances);
+
+	for(int i = 0; i < n; i++){
+		SimpleProcessItem* pSPI = variances@[i]; 
+		totalvariance += ((FloatDataItem*)pSPI->GetItem(0))->GetValue();
+		totalsize += ((IntDataItem*)pSPI->GetItem(1))->GetValue();	
+	}
+	totalvariance = totalvariance / totalsize;
+    double stdDeviation = sqrt(totalvariance);
+
+    printf("Std Deviation: %f\n", stdDeviation);
+
+}{ speak nil } { write nil }

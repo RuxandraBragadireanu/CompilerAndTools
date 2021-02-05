@@ -1,0 +1,14 @@
+% // Include files
+#include<ctime>
+#include<numeric>
+#include<map>
+#include "AirQualityIndex.h"
+#include "MeasurementInfo.h"
+#include "CsvTools.h"
+% // Additional include directories
+% // Additional library directories
+% // Additional linker libs/dll etc
+% // Additional source files
+AirQualityIndex.cpp
+MeasurementInfo.cpp
+CsvTools.cpp
